@@ -54,6 +54,12 @@ params:
     facebook: https://www.facebook.com/p/Sycamore-Coffee-Co-61561258343006/
     elfsight: 677beb74-710d-4fe0-861b-503569ccd3d2
   typekit: https://use.typekit.net/jhz5dtz.css
+  # WOFF2 files from that kit. Republish may change these; optional fonts
+  # only apply if they finish before first paint, so they get preloaded.
+  typekitWoff2:
+    - https://use.typekit.net/af/e2d3c9/0000000000000000775091cb/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n6&v=3
+    - https://use.typekit.net/af/ef1c48/0000000000000000776015b9/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n4&v=3
+    - https://use.typekit.net/af/5a184a/0000000000000000776015ba/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n6&v=3
   menu:
     featuredTitle: Seasonal Flights
 menu:

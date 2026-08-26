@@ -45,7 +45,7 @@
 {{ end }}
 
 {{ $rot := cond (eq (mod (int (default 1 .n)) 2) 1) "rot-2" "rot-n2" }}
-<figure class="polaroid {{ $rot }}{{ if .caption }} has-caption{{ end }}{{ with .class }} {{ . }}{{ end }}">
+<figure class="polaroid {{ $rot }}{{ if .eager }} is-hero{{ end }}{{ if .caption }} has-caption{{ end }}{{ with .class }} {{ . }}{{ end }}">
   <img
     src="{{ $fallback.RelPermalink }}"
     srcset="{{ delimit $srcset ", " }}"

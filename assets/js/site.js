@@ -186,7 +186,7 @@
     }
 
     for (const frame of frames) {
-      if (grouped.has(frame)) {
+      if (grouped.has(frame) || frame.classList.contains("is-hero")) {
         continue;
       }
       frame.classList.add("is-waiting");
@@ -194,7 +194,105 @@
     }
   };
 
+  const initHoursDialog = () => {
+    const trigger = document.querySelector("[data-hours-open]");
+    const dialog = document.getElementById("hours-dialog");
+    const dataEl = dialog.getAttribute("data-hours");
+    if (!trigger || !dialog || !dataEl) {
+      return;
+    }
+
+    let data;
+    try {
+      data = JSON.parse(dataEl);
+    } catch {
+      return;
+    }
+
+    const statusEl = dialog.querySelector(".hours-status");
+    const todayEl = dialog.querySelector(".hours-today");
+    const mapsEl = dialog.querySelector("[data-hours-maps]");
+    const closeBtn = dialog.querySelector("[data-hours-close]");
+
+    const minutesNow = () => {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: data.tz,
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+        weekday: "long",
+      }).formatToParts(new Date());
+      const get = (type) => parts.find((part) => part.type === type).value;
+      return {
+        day: get("weekday"),
+        minutes: Number(get("hour")) * 60 + Number(get("minute")),
+      };
+    };
+
+    const toMinutes = (stamp) => {
+      if (!stamp) {
+        return null;
+      }
+      const [h, m] = stamp.split(":").map(Number);
+      return h * 60 + m;
+    };
+
+    const paint = () => {
+      const now = minutesNow();
+      const row = (data.days || []).find((item) => item.day === now.day);
+      const opens = toMinutes(row && row.opens);
+      const closes = toMinutes(row && row.closes);
+      const windowMin = Number(data.soonMinutes) || 30;
+      let state = "closed";
+      let title = "Closed";
+
+      if (opens !== null && closes !== null) {
+        if (now.minutes >= opens && now.minutes < closes) {
+          if (closes - now.minutes <= windowMin) {
+            state = "soon";
+            title = "Closing Soon";
+          } else {
+            state = "open";
+            title = "We Are Open";
+          }
+        } else if (now.minutes < opens && opens - now.minutes <= windowMin) {
+          state = "opening";
+          title = "Opening Soon";
+        }
+      }
+
+      dialog.dataset.state = state;
+      statusEl.textContent = title;
+      todayEl.textContent = row ? `Today · ${row.label}` : "Today · Closed";
+
+      if (state === "closed") {
+        mapsEl.hidden = true;
+        mapsEl.removeAttribute("href");
+      } else {
+        mapsEl.hidden = false;
+        mapsEl.href = data.maps;
+      }
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      paint();
+      dialog.showModal();
+    });
+
+    closeBtn.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+  };
+
   initNav();
+  initHoursDialog();
   initCateringPicker();
   initPolaroids();
   initSocialEmbed();

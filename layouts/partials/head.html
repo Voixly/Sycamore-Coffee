@@ -29,7 +29,33 @@
 
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="preconnect" href="https://p.typekit.net" crossorigin>
+<link rel="preload" as="style" href="{{ site.Params.typekit }}">
 <link rel="stylesheet" href="{{ site.Params.typekit }}">
+{{ range site.Params.typekitWoff2 }}
+  <link rel="preload" as="font" type="font/woff2" href="{{ . }}" crossorigin>
+{{ end }}
+
+{{ if .IsHome }}
+  {{/* Keep crop/sizes in sync with the homepage hero in layouts/index.html. */}}
+  {{ $hero := resources.Get "images/photos/national-park.webp" }}
+  {{ if $hero }}
+    {{ $rw := 8.0 }}
+    {{ $rh := 9.0 }}
+    {{ $srcset := slice }}
+    {{ $fallback := false }}
+    {{ range slice 400 600 800 }}
+      {{ if le . $hero.Width }}
+        {{ $h := int (math.Round (mul (div (float .) $rw) $rh)) }}
+        {{ $img := $hero.Fill (printf "%dx%d webp" . $h) }}
+        {{ $srcset = $srcset | append (printf "%s %dw" $img.RelPermalink .) }}
+        {{ if or (not $fallback) (le . 800) }}{{ $fallback = $img }}{{ end }}
+      {{ end }}
+    {{ end }}
+    {{ with $fallback }}
+      <link rel="preload" as="image" href="{{ .RelPermalink }}" imagesrcset="{{ delimit $srcset ", " }}" imagesizes="(max-width: 980px) 94vw, 51vw" fetchpriority="high">
+    {{ end }}
+  {{ end }}
+{{ end }}
 
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
@@ -46,7 +72,7 @@
     ) }}
   {{ end }}
 {{ end }}
-{{ dict
+{{ $schema := dict
   "@context" "https://schema.org"
   "@type" "CafeOrCoffeeShop"
   "name" site.Title
@@ -67,6 +93,6 @@
   "geo" (dict "@type" "GeoCoordinates" "latitude" $addr.lat "longitude" $addr.lng)
   "openingHoursSpecification" $openingHours
   "sameAs" (slice site.Params.social.instagram site.Params.social.facebook)
-  | jsonify
 }}
+{{ $schema | jsonify | safeJS }}
 </script>
