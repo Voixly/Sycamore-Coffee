@@ -40,8 +40,16 @@ const toLabel = (key) => {
 
 const isEmail = (value) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
 
-const goTo = (request, path) =>
-  Response.redirect(new URL(path, request.url).toString(), 303);
+const goTo = (request, path, why) => {
+  const url = new URL(path, request.url);
+
+  /* Preview hosts only: names the failure without leaking Resend's body. */
+  if (why && url.hostname.endsWith("pages.dev")) {
+    url.searchParams.set("why", why);
+  }
+
+  return Response.redirect(url.toString(), 303);
+};
 
 /* Checkbox and radio groups can repeat a key; join rather than drop. */
 const collect = (form) => {
@@ -105,7 +113,7 @@ export async function onRequestPost({ request, env }) {
   if (!env.RESEND_API_KEY) {
     console.error("form: RESEND_API_KEY is not set");
 
-    return goTo(request, FAILURE_PATH);
+    return goTo(request, FAILURE_PATH, "missing-key");
   }
 
   let form;
@@ -115,7 +123,7 @@ export async function onRequestPost({ request, env }) {
   } catch (err) {
     console.error("form: unreadable body", err);
 
-    return goTo(request, FAILURE_PATH);
+    return goTo(request, FAILURE_PATH, "bad-body");
   }
 
   /* Bots fill the hidden honeypot. Report success so they do not retune and
@@ -127,7 +135,7 @@ export async function onRequestPost({ request, env }) {
   const fields = collect(form);
 
   if (fields.size === 0) {
-    return goTo(request, FAILURE_PATH);
+    return goTo(request, FAILURE_PATH, "empty");
   }
 
   const subject = String(form.get("_subject") || DEFAULT_SUBJECT).slice(0, 200);
@@ -152,7 +160,7 @@ export async function onRequestPost({ request, env }) {
   if (!payload.from || payload.to.length === 0) {
     console.error("form: FORM_FROM or FORM_TO is not set");
 
-    return goTo(request, FAILURE_PATH);
+    return goTo(request, FAILURE_PATH, "missing-from");
   }
 
   const res = await fetch(RESEND_ENDPOINT, {
@@ -167,7 +175,7 @@ export async function onRequestPost({ request, env }) {
   if (!res.ok) {
     console.error(`form: Resend returned ${res.status}`, await res.text());
 
-    return goTo(request, FAILURE_PATH);
+    return goTo(request, FAILURE_PATH, `resend-${res.status}`);
   }
 
   return goTo(request, SUCCESS_PATH);
