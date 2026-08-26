@@ -6,7 +6,7 @@
     {{ partial "photo.html" (dict
       "src" "photos/national-park.webp"
       "alt" "The Sycamore Coffee Co shop and patio in Magnolia, Texas"
-      "ratio" "4/5" "n" 1 "eager" true
+      "ratio" "8/9" "n" 1 "eager" true
       "sizes" "(max-width: 980px) 94vw, 51vw") }}
     <div class="home-hero-copy">
       <article class="cream-card">
@@ -16,15 +16,18 @@
       <article class="cream-card hours-card">
         <div>
           <h2>Shop Hours</h2>
-          {{ range site.Params.hours }}
-            <p>{{ .label }}: {{ .value | replaceRE `\s?(AM|PM)` "<sup>$1</sup>" | safeHTML }}</p>
-          {{ end }}
+          <p class="hours-inline">
+            {{ range $i, $day := site.Params.hours }}
+              {{ if $i }}<span aria-hidden="true">·</span>{{ end }}
+              <span>{{ $day.label }}: {{ $day.value | replaceRE `\s?(AM|PM)` "<sup>$1</sup>" | safeHTML }}</span>
+            {{ end }}
+          </p>
         </div>
         <div>
           <h2>Shop Location</h2>
-          <p>{{ $addr.street }} {{ $addr.suite }},<br>{{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</p>
-          <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener">Visit Sycamore</a>
+          <p>{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</p>
         </div>
+        <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener">Visit Sycamore</a>
       </article>
     </div>
   </div>

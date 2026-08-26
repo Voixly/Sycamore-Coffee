@@ -148,7 +148,47 @@
       { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
     );
 
+    const desktop = window.matchMedia("(min-width: 981px)").matches;
+    const grouped = new Set();
+
+    /* One trigger for the four-up row so the CSS delays run as a wave
+       instead of each frame racing the observer on its own. */
+    if (desktop) {
+      for (const row of document.querySelectorAll(".photo-row")) {
+        const kids = [...row.querySelectorAll(".polaroid")];
+        if (!kids.length) {
+          continue;
+        }
+
+        const reveal = () => {
+          for (const kid of kids) {
+            kid.classList.add("is-in");
+          }
+        };
+
+        const rowObs = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) {
+              return;
+            }
+            reveal();
+            rowObs.disconnect();
+          },
+          { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        for (const kid of kids) {
+          grouped.add(kid);
+          kid.classList.add("is-waiting");
+        }
+        rowObs.observe(row);
+      }
+    }
+
     for (const frame of frames) {
+      if (grouped.has(frame)) {
+        continue;
+      }
       frame.classList.add("is-waiting");
       observer.observe(frame);
     }
