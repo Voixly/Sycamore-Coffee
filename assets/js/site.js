@@ -211,7 +211,6 @@
 
     const statusEl = dialog.querySelector(".hours-status");
     const subEl = dialog.querySelector(".hours-sub");
-    const todayEl = dialog.querySelector(".hours-today");
     const mapsEl = dialog.querySelector("[data-hours-maps]");
     const closeBtn = dialog.querySelector("[data-hours-close]");
     const WEEKDAYS = [
@@ -303,20 +302,22 @@
       let sub = closedLine(now.day, now.minutes);
 
       if (opens !== null && closes !== null) {
+        const openAt = formatOpen(row.opens);
+        const closeAt = formatOpen(row.closes);
         if (now.minutes >= opens && now.minutes < closes) {
           if (closes - now.minutes <= windowMin) {
             state = "soon";
             title = "Closing Soon";
-            sub = "Come grab one before we close";
+            sub = `We’re serving coffee until ${closeAt} today.`;
           } else {
             state = "open";
             title = "We Are Open";
-            sub = "Come Get a Cup of Coffee";
+            sub = `We’re serving coffee from ${openAt} – ${closeAt} today.`;
           }
         } else if (now.minutes < opens && opens - now.minutes <= windowMin) {
           state = "opening";
           title = "Opening Soon";
-          sub = "Coffee will be Ready Shortly";
+          sub = `We’ll open at ${openAt}.`;
         }
       }
 
@@ -324,7 +325,6 @@
         state,
         title,
         sub,
-        today: row ? `Today · ${row.label}` : "Today · Closed",
         badge: BADGE[state] || BADGE.closed,
       };
     };
@@ -341,7 +341,6 @@
       dialog.dataset.state = snap.state;
       statusEl.textContent = snap.title;
       subEl.textContent = snap.sub;
-      todayEl.textContent = snap.today;
       mapsEl.hidden = snap.state === "closed";
       mapsEl.href = data.maps;
     };

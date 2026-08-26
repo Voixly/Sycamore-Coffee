@@ -33,14 +33,13 @@
 }}
 
 <section class="page-hero">
-  <p class="eyebrow">Coffee Camper</p>
-  <h1>Book our Coffee Camper or Get Coffee Catered for Your Next Event!</h1>
+  <h1>Book our Coffee Camper</h1>
+  <p class="hero-sub-sans">or Get Coffee Catered for Your Next Event!</p>
   <p class="lede">Three ways to bring Sycamore to you—pick the one that fits your space and your guest count.</p>
 </section>
 
 {{ range $i, $opt := $options }}
-  {{/* Alternating tints put a visible edge at every boundary between options. */}}
-  <section class="tint-band{{ if eq (mod $i 2) 0 }} tinted{{ end }}" id="{{ $opt.id }}">
+  <section class="tint-band {{ if eq (mod $i 2) 0 }}theme-coral{{ else }}theme-blue{{ end }}" id="{{ $opt.id }}">
     <div class="about-split{{ if eq (mod $i 2) 1 }} reverse{{ end }}">
       {{ partial "photo.html" (dict
         "src" $opt.src "alt" $opt.alt "ratio" "4/3"
@@ -55,7 +54,7 @@
   </section>
 {{ end }}
 
-<section class="tint-band tinted-cool" id="book">
+<section class="tint-band theme-blue" id="book">
   <div class="contact-grid">
     <div>
       <p class="eyebrow">Inquiry</p>

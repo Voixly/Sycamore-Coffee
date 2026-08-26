@@ -106,18 +106,18 @@ const buildHtml = (fields, subject) => {
   for (const [key, value] of fields) {
     rows.push(
       `<tr>
-         <th align="left" valign="top" style="padding:6px 14px 6px 0;color:#336882;font:600 13px/1.4 system-ui,sans-serif;white-space:nowrap">${escapeHtml(
+         <th align="left" valign="top" style="padding:6px 14px 6px 0;color:#286987;font:600 13px/1.4 system-ui,sans-serif;white-space:nowrap">${escapeHtml(
            toLabel(key)
          )}</th>
-         <td valign="top" style="padding:6px 0;color:#1e4152;font:400 15px/1.5 system-ui,sans-serif">${escapeHtml(
+         <td valign="top" style="padding:6px 0;color:#134156;font:400 15px/1.5 system-ui,sans-serif">${escapeHtml(
            value
          ).replaceAll("\n", "<br>")}</td>
        </tr>`
     );
   }
 
-  return `<div style="background:#fff8eb;padding:24px">
-      <h1 style="margin:0 0 16px;color:#1e4152;font:700 18px/1.3 system-ui,sans-serif">${escapeHtml(
+  return `<div style="background:#faf7f4;padding:24px">
+      <h1 style="margin:0 0 16px;color:#134156;font:700 18px/1.3 system-ui,sans-serif">${escapeHtml(
         subject
       )}</h1>
       <table cellpadding="0" cellspacing="0" role="presentation">${rows.join(
