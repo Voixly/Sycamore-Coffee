@@ -9,6 +9,7 @@
   (dict
     "id" "camper"
     "title" "The Coffee Camper"
+    "book" "Coffee Camper"
     "cta" "Book the Camper"
     "src" "photos/sycamore-18.webp"
     "alt" "The Sycamore Coffee Camper parked and serving at an event"
@@ -16,6 +17,7 @@
   (dict
     "id" "cart"
     "title" "Sycamore Coffee Cart"
+    "book" "Coffee Cart"
     "cta" "Book the Cart"
     "src" "photos/sycamore-21.webp"
     "alt" "A barista behind the Sycamore coffee cart and its brass espresso machine"
@@ -23,6 +25,7 @@
   (dict
     "id" "delivery"
     "title" "Corporate Delivery"
+    "book" "Corporate Delivery"
     "cta" "Book a Delivery"
     "src" "photos/cart.webp"
     "alt" "A barista with insulated coffee dispensers ready for an office delivery"
@@ -46,7 +49,7 @@
       <div>
         <h2>{{ $opt.title }}</h2>
         <p>{{ $opt.body }}</p>
-        <a class="btn btn-primary" href="#book" data-catering="{{ $opt.title }}">{{ $opt.cta }}</a>
+        <a class="btn btn-primary" href="#book" data-catering="{{ $opt.book }}">{{ $opt.cta }}</a>
       </div>
     </div>
   </section>
@@ -60,13 +63,13 @@
       <p>Tell us a little about your event and we’ll follow up with availability and a quote.</p>
     </div>
     <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
-      <input type="hidden" name="_subject" value="Coffee catering request">
+      <input type="hidden" name="_subject" value="Request to Book">
       {{ partial "form-meta.html" . }}
       <label>
         <span>What are you booking?</span>
         <select name="service" data-catering-select required>
           {{ range $options }}
-            <option value="{{ .title }}">{{ .title }}</option>
+            <option value="{{ .book }}">{{ .title }}</option>
           {{ end }}
         </select>
       </label>

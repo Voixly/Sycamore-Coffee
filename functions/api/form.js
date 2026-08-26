@@ -73,6 +73,23 @@ const collect = (form) => {
   return fields;
 };
 
+const emailSubject = (form, fields) => {
+  const theirs = String(fields.get("subject") || "").trim();
+
+  if (theirs) {
+    return theirs.slice(0, 200);
+  }
+
+  const preset = String(form.get("_subject") || DEFAULT_SUBJECT).trim();
+  const service = String(fields.get("service") || "").trim();
+
+  if (preset === "Request to Book" && service) {
+    return `Request to Book (${service})`.slice(0, 200);
+  }
+
+  return (preset || DEFAULT_SUBJECT).slice(0, 200);
+};
+
 const buildText = (fields) => {
   const lines = [];
 
@@ -138,7 +155,7 @@ export async function onRequestPost({ request, env }) {
     return goTo(request, FAILURE_PATH, "empty");
   }
 
-  const subject = String(form.get("_subject") || DEFAULT_SUBJECT).slice(0, 200);
+  const subject = emailSubject(form, fields);
   const sender = fields.get("email");
 
   const payload = {
