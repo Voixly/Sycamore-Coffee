@@ -10,6 +10,7 @@
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
 <link rel="canonical" href="{{ .Permalink }}">
+{{ if .Params.noindex }}<meta name="robots" content="noindex, follow">{{ end }}
 <link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/png">
 <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
 <meta name="theme-color" content="#1E4152">

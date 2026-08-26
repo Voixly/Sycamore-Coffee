@@ -118,5 +118,72 @@ Hours entries carry both display strings and machine times:
 - **Elfsight** renders the Instagram feed on the homepage. `assets/js/site.js`
   injects it only once the section approaches the viewport, so it stays off the
   critical path.
-- **formsubmit.co** receives every form post. The endpoint is
-  `params.formEndpoint`; each form sets its own `_subject`.
+- **Resend** delivers every form submission. See below.
+
+## Forms
+
+All five forms (contact, catering, camper, vendor application, vendor
+agreement) post to `params.formEndpoint`, which is `/api/form`. That route is a
+Cloudflare Pages Function in `functions/api/form.js` that emails the submission
+through Resend, then redirects to `/thank-you/` or, if the send fails, to
+`/message-failed/`.
+
+The function must run server-side: Resend blocks browser calls so the API key
+is never exposed to the client.
+
+Field names are not hardcoded. Everything submitted is emailed except keys
+starting with `_`, which are reserved:
+
+- `_subject` sets the email subject, so each form is identifiable in the inbox.
+- `_honey` is the honeypot from `partials/form-meta.html`. Submissions that
+  fill it are silently dropped and still see the thank-you page.
+
+Adding a field to a form needs no change to the function.
+
+### One-time setup
+
+1. In Resend, add `sycamorecoffeeco.com` as a sending domain and add the DKIM
+   and SPF records it gives you at your DNS provider. Until the domain
+   verifies, sends fail with a 403.
+2. Create an API key with sending permission only.
+3. In the Cloudflare Pages project, under Settings → Environment variables, set
+   these for both Production and Preview:
+
+   | Variable | Type | Value |
+   |---|---|---|
+   | `RESEND_API_KEY` | Secret | the key from step 2 |
+   | `FORM_TO` | Plaintext | `info@sycamorecoffeeco.com`, comma separated for several |
+   | `FORM_FROM` | Plaintext | `Sycamore Coffee Co <forms@sycamorecoffeeco.com>` |
+
+`FORM_FROM` must be on the verified domain or Resend returns a 403. Replies go
+to whoever submitted the form, via `reply_to`.
+
+### Cloudflare Pages build settings
+
+| Setting | Value |
+|---|---|
+| Build command | `hugo --gc --minify` |
+| Output directory | `public` |
+| Environment variable | `HUGO_VERSION` = your local `hugo version` |
+
+`functions/` is picked up automatically; it is not part of the Hugo build.
+
+### Running the function locally
+
+`hugo server` does not run Pages Functions, so forms 404 on :1313. To exercise
+them, build first and serve through Wrangler:
+
+```sh
+hugo --gc --minify
+npx wrangler pages dev public \
+  --binding FORM_TO=you@example.com "FORM_FROM=Test <onboarding@resend.dev>" \
+  RESEND_API_KEY=re_your_key
+```
+
+Send test mail to `delivered@resend.dev`. Never test with made-up addresses at
+real providers; they bounce and damage sender reputation.
+
+### Spam
+
+The honeypot stops naive bots. If real spam gets through, add Cloudflare
+Turnstile and verify the token at the top of the function.
