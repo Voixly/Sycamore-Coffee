@@ -1,5 +1,11 @@
+{{ $quotes := false }}
+{{ with try hugo.Data.testimonials }}
+  {{ if not .Err }}{{ $quotes = .Value }}{{ end }}
+{{ end }}
+{{ if not $quotes }}{{ $quotes = site.Data.testimonials }}{{ end }}
+
 <div class="quote-grid">
-  {{ range hugo.Data.testimonials }}
+  {{ range $quotes }}
     <blockquote>
       <p>{{ .quote }}</p>
       <footer>

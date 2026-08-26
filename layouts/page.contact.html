@@ -1,8 +1,15 @@
 {{ define "main" }}
-<section class="page-hero">
-  <p class="eyebrow">We’d love to hear from you</p>
-  <h1>Contact Us</h1>
-  <p class="lede">Questions, catering, or just saying hello—drop us a note.</p>
+<section class="page-hero page-hero-split">
+  <div>
+    <p class="eyebrow">We’d love to hear from you</p>
+    <h1>Contact Us</h1>
+    <p class="lede">Questions, catering, or just saying hello—drop us a note.</p>
+  </div>
+  {{ partial "photo.html" (dict
+    "src" "photos/interior.jpg"
+    "alt" "The seating area inside Sycamore Coffee Co"
+    "ratio" "4/5" "n" 3 "eager" true
+    "sizes" "(max-width: 900px) 70vw, 272px") }}
 </section>
 
 {{ $addr := site.Params.address }}

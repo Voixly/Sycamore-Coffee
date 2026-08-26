@@ -5,9 +5,10 @@ Hugo. No theme, no build step beyond Hugo itself, no JavaScript framework.
 
 ## Requirements
 
-Hugo **extended** v0.146 or newer — the extended build is required for image
-processing, and 0.146 introduced the flat `layouts/` template layout this site
-uses. Verify with `hugo version`; the string must contain `extended`.
+Hugo **extended** v0.165. Cloudflare Pages defaults to 0.147.7; set
+`HUGO_VERSION` to `0.165.0` in the Pages build environment or the deploy will
+use an older binary than this repo expects. Verify locally with `hugo version`;
+the string must contain `extended`.
 
 ```sh
 brew install hugo     # macOS
@@ -164,7 +165,7 @@ to whoever submitted the form, via `reply_to`.
 |---|---|
 | Build command | `hugo --gc --minify` |
 | Output directory | `public` |
-| Environment variable | `HUGO_VERSION` = your local `hugo version` |
+| Environment variable | `HUGO_VERSION` = `0.165.0` (Pages default is 0.147.7) |
 
 `functions/` is picked up automatically; it is not part of the Hugo build.
 

@@ -118,7 +118,44 @@
     }
   };
 
+  // Polaroids rest at --tilt. JS adds is-waiting so they start lower and more
+  // rotated, then is-in settles them. Without JS, or with reduced motion, they
+  // render in the rest pose from the first paint.
+  const initPolaroids = () => {
+    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      return;
+    }
+
+    const frames = document.querySelectorAll(".polaroid");
+    if (!frames.length) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) {
+            continue;
+          }
+          entry.target.classList.add("is-in");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    for (const frame of frames) {
+      frame.classList.add("is-waiting");
+      observer.observe(frame);
+    }
+  };
+
   initNav();
   initCateringPicker();
+  initPolaroids();
   initSocialEmbed();
 })();

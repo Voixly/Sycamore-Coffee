@@ -211,6 +211,7 @@ main:focus { outline: none; }
 }
 
 .polaroid {
+  --tilt: 0deg;
   margin: 0;
   background: var(--cream);
   border: 8px solid var(--cream);
@@ -218,6 +219,7 @@ main:focus { outline: none; }
   border-radius: 12px;
   box-shadow: 0 12px 28px rgb(30 65 82 / 12%);
   overflow: hidden;
+  transform: rotate(var(--tilt));
 }
 /* Intrinsic ratio comes from the width/height attributes Hugo writes, so the
    box is reserved before the image lands. */
@@ -235,8 +237,20 @@ main:focus { outline: none; }
   color: var(--blue-1000);
   margin: 0;
 }
-.rot-2 { transform: rotate(2.4deg); }
-.rot-n2 { transform: rotate(-2.4deg); }
+.rot-2 { --tilt: 2.4deg; --spin-from: 11deg; }
+.rot-n2 { --tilt: -2.4deg; --spin-from: -11deg; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .polaroid.is-waiting {
+    opacity: 0;
+    transform: translate3d(0, 2.6rem, 0) rotate(var(--spin-from));
+    transition: opacity 1.05s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .polaroid.is-waiting.is-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--tilt));
+  }
+}
 
 /* 4. Header / nav ======================================================== */
 
@@ -306,6 +320,7 @@ main:focus { outline: none; }
   margin-top: 2rem;
   padding: 3.5rem 0 1.5rem;
 }
+.page-home .site-footer { margin-top: 0; }
 .site-footer a { color: var(--footer-ink); }
 .site-footer a:hover { color: var(--btn-ink); }
 .site-footer h2 {
@@ -364,7 +379,7 @@ main:focus { outline: none; }
 .band-blush {
   background: var(--blush);
   color: var(--ink);
-  padding-top: 3.4rem;
+  padding: 3.4rem 0;
 }
 .band-slate {
   background: var(--slate);
@@ -414,12 +429,13 @@ main:focus { outline: none; }
   flex-direction: column;
   gap: 1.1rem;
 }
+.home-hero-copy .cream-card { flex: 1; }
 .home-hero-copy .cream-card:first-child {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+.home-hero-copy .hours-card { align-content: center; }
 .home-hero h1 {
   font-size: clamp(2.3rem, 4.4vw, 3.6rem);
   max-width: 12ch;
@@ -537,6 +553,18 @@ main:focus { outline: none; }
   align-items: center;
   padding: 4rem 0;
 }
+.contact-grid { align-items: start; }
+
+.page-hero-split {
+  display: grid;
+  grid-template-columns: 1fr min(17rem, 34%);
+  gap: 2.5rem;
+  align-items: center;
+}
+.page-hero-split .polaroid {
+  width: min(17rem, 100%);
+  justify-self: end;
+}
 
 /* Full-bleed tint behind a wrapped section. Alternating tinted and untinted
    bands puts a visible edge at every boundary without drawing rules. */
@@ -571,7 +599,7 @@ main:focus { outline: none; }
 }
 .quote-grid blockquote {
   margin: 0;
-  background: var(--cream);
+  background: var(--blue-500);
   border-radius: var(--radius);
   padding: 1.6rem;
 }
@@ -660,7 +688,9 @@ main:focus { outline: none; }
   .about-split,
   .camper-hero,
   .contact-grid,
-  .offer-grid { grid-template-columns: 1fr; }
+  .offer-grid,
+  .page-hero-split { grid-template-columns: 1fr; }
+  .page-hero-split .polaroid { justify-self: start; }
 }
 
 @media (max-width: 640px) {
@@ -985,4 +1015,4 @@ main:focus { outline: none; }
   border-radius: var(--radius);
   padding: 1.25rem;
 }
-.contact-cards h2 { font-size: 1.1rem; }
+.contact-cards h2 { font-size: 1.55rem; }

@@ -1,5 +1,5 @@
 baseURL: https://sycamorecoffeeco.com/
-languageCode: en-US
+locale: en-US
 title: Sycamore Coffee Co
 copyright: "© 2026 Sycamore Coffee Co. All Rights Reserved"
 enableRobotsTXT: true
