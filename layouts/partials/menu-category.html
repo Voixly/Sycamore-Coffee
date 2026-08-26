@@ -1,0 +1,34 @@
+<article class="menu-cat">
+  <header class="menu-cat-head">
+    <h2 class="menu-outline">{{ .name }}</h2>
+    {{ if .headerPrice }}
+      {{ partial "menu-price.html" .headerPrice }}
+    {{ else if .hasSizes }}
+      <div class="size-labels" aria-hidden="true"><span>Small</span><span>Large</span></div>
+    {{ end }}
+  </header>
+  <ul class="menu-list">
+    {{ range .items }}
+      <li class="menu-row">
+        <div class="item-line">
+          <span class="item-name">{{ .name }}</span>
+          {{ if or .small .large }}
+            <span class="leader" aria-hidden="true"></span>
+            <div class="item-prices{{ if $.hasSizes }} has-sizes{{ end }}">
+              {{ if $.hasSizes }}
+                {{ partial "menu-price.html" (dict "value" .small "label" "Small") }}
+                {{ partial "menu-price.html" (dict "value" .large "label" "Large") }}
+              {{ else if .large }}
+                {{ partial "menu-price.html" .large }}
+              {{ else }}
+                {{ partial "menu-price.html" .small }}
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+        {{ with .desc }}<p class="item-desc">{{ . }}</p>{{ end }}
+        {{ with .note }}<p class="item-desc">{{ . }}</p>{{ end }}
+      </li>
+    {{ end }}
+  </ul>
+</article>

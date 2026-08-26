@@ -1,0 +1,35 @@
+{{ $addr := site.Params.address }}
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <h2>Contact Us</h2>
+      <p><a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a></p>
+      <p><a href="{{ site.Params.phoneHref | safeURL }}">{{ site.Params.phone }}</a></p>
+      <p>
+        <a href="{{ site.Params.social.facebook }}" target="_blank" rel="noopener">Facebook</a>
+        <span aria-hidden="true">·</span>
+        <a href="{{ site.Params.social.instagram }}" target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
+
+    <div>
+      <h2>Shop Hours</h2>
+      {{ range site.Params.hours }}
+        <p class="hours-row"><span>{{ .label }}</span> <span>{{ .value }}</span></p>
+      {{ end }}
+    </div>
+
+    <div>
+      <h2>Shop Location</h2>
+      <p>
+        <a href="{{ $addr.maps }}" target="_blank" rel="noopener">
+          {{ $addr.street }} {{ $addr.suite }},<br>
+          {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>{{ site.Copyright }}</p>
+  </div>
+</footer>

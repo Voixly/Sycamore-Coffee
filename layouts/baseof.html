@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang }}">
+  <head>
+    {{ partial "head.html" . }}
+  </head>
+  <body class="{{ if .IsHome }}page-home{{ else if .File }}page-{{ .File.BaseFileName }}{{ else }}page-default{{ end }}">
+    <a class="skip-link" href="#main">Skip to content</a>
+    {{ partial "header.html" . }}
+    <main id="main" tabindex="-1">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+    {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
+    <script src="{{ $js.RelPermalink }}" defer></script>
+  </body>
+</html>

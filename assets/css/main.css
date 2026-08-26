@@ -1,0 +1,988 @@
+/* ==========================================================================
+   Sycamore Coffee Co
+   1. Tokens          2. Reset / base     3. Primitives
+   4. Header / nav    5. Footer           6. Home page
+   7. Interior pages  8. Menu board       9. Forms
+   ========================================================================== */
+
+/* 1. Tokens ============================================================== */
+
+:root {
+  --blue-500: #def0fa;
+  --blue-600: #cae5f4;
+  --blue-700: #a3cde4;
+  --blue-800: #508aa7;
+  --blue-900: #336882;
+  --blue-1000: #1e4152;
+  --harvest-600: #f1dec9;
+  --harvest-900: #7d5c35;
+  --coral-900: #8b4b46;
+
+  --cream: #fff8eb;
+  --paper: #fffaf6;
+  --blush: #faf0ef;
+  --slate: #b8ccd7;
+  --navy-band: #385d6f;
+  --footer-bg: #fff6e7;
+  --footer-ink: #865d45;
+
+  /* Coral is darkened from the print brand tint so white button labels clear
+     WCAG AA (4.5:1); the original #d17670 measured 3.1:1. */
+  --btn: #b0514b;
+  --btn-hover: #963f3a;
+  --btn-ink: #3c2828;
+  --ink: var(--blue-1000);
+  --muted: #2f5a70;
+  --focus: #1e4152;
+
+  /* Menu board palette. The medium tones carry body-size text, so they are
+     the darkest members of each ramp that still read as "blue" / "coral". */
+  --menu-blue-darkest: #134156;
+  --menu-blue-medium: #336882;
+  --menu-blue-light: #9ecde6;
+  --menu-blue-lines: #eaf6fc;
+  --menu-coral-darkest: #5a3131;
+  --menu-coral-medium: #8d5252;
+  --menu-coral-light: #eebab9;
+  --menu-coral-surface: #fee8e8;
+  --menu-coral-dark: #7a4646;
+
+  --display: "beverly-drive-right", Georgia, serif;
+  --sans: "barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius: 12px;
+  --radius-card: 28px;
+  --shadow: 0 18px 40px rgb(30 65 82 / 12%);
+  --header-h: 84px;
+  --wrap: min(1120px, 100% - 2.5rem);
+  --home-wrap: min(1180px, 100% - 3rem);
+}
+
+/* 2. Reset / base ======================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Anchored sections must clear the sticky header. */
+:target { scroll-margin-top: calc(var(--header-h) + 1rem); }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--cream);
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Rotated polaroids poke a few pixels past their container by design.
+   `clip` contains them without creating a scroll container, so the sticky
+   header and menu jump bar keep working. */
+main { overflow-x: clip; }
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--blue-900); }
+a:hover { color: var(--coral-900); }
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); }
+h2 { font-size: clamp(1.9rem, 3.6vw, 3rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+p { margin: 0 0 1em; text-wrap: pretty; }
+ul { margin: 0 0 1.25em; padding-left: 1.2em; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.band-navy :focus-visible,
+.site-header :focus-visible { outline-color: var(--cream); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--cream);
+  color: var(--ink);
+  padding: 0.7rem 1.1rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0; color: var(--ink); }
+
+main:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .polaroid { transform: none !important; }
+}
+
+/* 3. Primitives ========================================================== */
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue-900);
+  margin: 0 0 0.75rem;
+}
+
+.hero-sub {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--blue-900);
+  margin: -0.35rem 0 0.75rem;
+}
+
+.lede {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 38rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--btn); color: #fff; }
+.btn-primary:hover { background: var(--btn-hover); color: #fff; }
+.btn-sm { min-height: 38px; padding: 0.45rem 1.05rem; font-size: 0.78rem; }
+.btn-ghost {
+  background: transparent;
+  color: var(--blue-1000);
+  border-color: var(--blue-1000);
+}
+.btn-ghost:hover { background: var(--blue-1000); color: var(--cream); }
+.text-link {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  color: var(--blue-900);
+}
+
+.polaroid {
+  margin: 0;
+  background: var(--cream);
+  border: 8px solid var(--cream);
+  border-bottom-width: 36px;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgb(30 65 82 / 12%);
+  overflow: hidden;
+}
+/* Intrinsic ratio comes from the width/height attributes Hugo writes, so the
+   box is reserved before the image lands. */
+.polaroid img { width: 100%; border-radius: 4px; }
+.polaroid.stacked { margin-top: 1.5rem; }
+/* A caption fills the polaroid's bottom strip, so the fat border would double it. */
+.polaroid.has-caption { border-bottom-width: 8px; }
+.polaroid figcaption {
+  padding: 0.85rem 0.9rem 0.6rem;
+  text-align: center;
+}
+.photo-title {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: var(--blue-1000);
+  margin: 0;
+}
+.rot-2 { transform: rotate(2.4deg); }
+.rot-n2 { transform: rotate(-2.4deg); }
+
+/* 4. Header / nav ======================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--blue-1000);
+}
+.header-inner {
+  width: var(--wrap);
+  margin: 0 auto;
+  min-height: var(--header-h);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+}
+.logo { display: flex; }
+.logo img { width: min(200px, 42vw); height: auto; }
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+}
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+  color: var(--cream);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nav a[aria-current="page"],
+.nav a:hover { color: #f0a49e; }
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.header-cta { min-height: 40px; padding: 0.5rem 1.25rem; font-size: 0.82rem; }
+
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  padding: 11px 10px;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--cream);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle span + span { margin-top: 6px; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* 5. Footer ============================================================== */
+
+.site-footer {
+  background: var(--footer-bg);
+  color: var(--footer-ink);
+  margin-top: 2rem;
+  padding: 3.5rem 0 1.5rem;
+}
+.site-footer a { color: var(--footer-ink); }
+.site-footer a:hover { color: var(--btn-ink); }
+.site-footer h2 {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--harvest-900);
+}
+.footer-inner {
+  width: var(--wrap);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 2rem;
+}
+.hours-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin: 0 0 0.25rem;
+}
+.footer-bottom {
+  width: var(--wrap);
+  margin: 2.5rem auto 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(134 93 69 / 20%);
+  font-size: 0.88rem;
+}
+
+/* 6. Home page =========================================================== */
+
+.page-home { background: var(--navy-band); }
+.page-home main { padding: 0; }
+
+.home-wrap {
+  width: var(--home-wrap);
+  margin: 0 auto;
+}
+.band { position: relative; overflow: hidden; }
+.band-navy {
+  background-color: var(--navy-band);
+  color: var(--cream);
+}
+.band-navy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/brand/sycamore-topo-lines-dark-blue.svg") center / cover no-repeat;
+  opacity: 0.14;
+  pointer-events: none;
+}
+.band-navy > * { position: relative; z-index: 1; }
+.band-blush {
+  background: var(--blush);
+  color: var(--ink);
+  padding-top: 3.4rem;
+}
+.band-slate {
+  background: var(--slate);
+  color: var(--ink);
+  padding-top: 3.6rem;
+}
+.section-title {
+  text-align: center;
+  font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+  margin: 0 0 2.4rem;
+  color: var(--blue-1000);
+}
+.page-home .polaroid { margin: 0.45rem; }
+
+.cream-card {
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: var(--radius-card);
+  padding: 1.7rem 1.85rem 1.85rem;
+}
+.cream-card h1,
+.cream-card h2 {
+  color: var(--blue-1000);
+  margin-bottom: 0.45em;
+}
+.cream-card p { margin-bottom: 0.55em; color: var(--muted); }
+.cream-card .btn { margin-top: 0.7rem; }
+
+.hours-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1.25rem;
+}
+.hours-card h2 { font-size: 1.55rem; }
+.hours-card p { font-size: 0.95rem; }
+.hours-card sup { font-size: 0.62em; }
+
+.home-hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 1.75rem;
+  align-items: stretch;
+  padding: 2.4rem 0 1.5rem;
+}
+.home-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.home-hero-copy .cream-card:first-child {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.home-hero h1 {
+  font-size: clamp(2.3rem, 4.4vw, 3.6rem);
+  max-width: 12ch;
+  line-height: 1.05;
+}
+
+.photo-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  padding: 0.5rem 0 3.4rem;
+}
+
+.community-split {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 0.4rem 0 4.2rem;
+}
+.community-copy h2 {
+  font-size: clamp(2.2rem, 4vw, 3.3rem);
+  margin-bottom: 1rem;
+}
+.community-copy p { color: var(--muted); }
+.community-subhead {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: -0.5rem 0 0.9rem;
+  color: var(--blue-900);
+}
+
+.fav-mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.6rem 3.4rem;
+  padding-bottom: 4.2rem;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.fav-mosaic h3 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+  color: var(--blue-1000);
+}
+
+.commit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 2.2rem;
+  padding-bottom: 4.2rem;
+}
+.commit-grid h3 {
+  font-size: 1.55rem;
+  margin-bottom: 0.55rem;
+}
+.commit-grid p { color: var(--muted); }
+
+.wheels-grid {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 1.6rem;
+  align-items: start;
+  padding: 3.2rem 0 3.6rem;
+}
+.wheels-left { display: grid; gap: 1.15rem; }
+
+.ig-embed {
+  padding-bottom: 3.5rem;
+  min-height: 280px;
+}
+
+@media (max-width: 980px) {
+  .home-hero,
+  .community-split,
+  .wheels-grid { grid-template-columns: 1fr; }
+  .photo-row { grid-template-columns: 1fr 1fr; }
+  .home-hero { padding-top: 1.5rem; }
+}
+
+@media (max-width: 640px) {
+  :root { --home-wrap: min(1180px, 100% - 1.35rem); }
+  .fav-mosaic,
+  .photo-row { grid-template-columns: 1fr; }
+}
+
+/* 7. Interior pages ====================================================== */
+
+.page-hero,
+.about-split,
+.about-gallery,
+.values,
+.verse,
+.socials,
+.contact-grid,
+.offer-grid,
+.camper-hero,
+.prose-page,
+.menu-head {
+  width: var(--wrap);
+  margin: 0 auto;
+}
+
+.page-hero { padding: 3.5rem 0 2rem; }
+.page-hero-plain { padding-bottom: 6rem; }
+
+.about-split,
+.camper-hero,
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 4rem 0;
+}
+
+/* Full-bleed tint behind a wrapped section. Alternating tinted and untinted
+   bands puts a visible edge at every boundary without drawing rules. */
+.tint-band > * {
+  width: var(--wrap);
+  margin: 0 auto;
+}
+.tinted { background: var(--blush); }
+.tinted-cool { background: var(--blue-500); }
+
+.socials { padding: 2rem 0 4.5rem; }
+.section-head { text-align: center; margin-bottom: 2.5rem; }
+.section-head h2 { margin-bottom: 0; }
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.25rem;
+  padding: 1rem 0 3rem;
+}
+.value {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+}
+.value p { color: var(--muted); margin: 0; }
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.25rem;
+}
+.quote-grid blockquote {
+  margin: 0;
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+}
+.quote-grid p { font-style: italic; color: var(--muted); }
+.quote-grid footer {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+.quote-grid img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.quote-grid cite { font-style: normal; font-weight: 600; }
+
+.verse {
+  background: var(--blue-1000);
+  color: var(--blue-600);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  margin: 1rem auto 3rem;
+}
+.verse blockquote { margin: 0; }
+.verse p {
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--cream);
+}
+.verse cite { color: var(--harvest-600); font-style: normal; font-weight: 600; }
+
+.about-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+.offer-grid h2 { margin: 0; font-size: clamp(1.3rem, 2.1vw, 1.7rem); }
+.hero-inline { max-width: 720px; margin: 0 auto 2.5rem; }
+
+.map-embed {
+  width: var(--wrap);
+  margin: 0 auto 4rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.map-embed iframe { display: block; width: 100%; height: 380px; border: 0; }
+
+.prose-page { padding-bottom: 2rem; }
+.prose-page h2 { margin-top: 1.8rem; }
+.prose-page p, .prose-page li { color: var(--muted); }
+.agreement { max-width: 46rem; }
+
+@media (min-width: 901px) {
+  .about-split.reverse > :first-child { order: 2; }
+}
+
+@media (max-width: 900px) {
+  :root { --wrap: min(1120px, 100% - 1.5rem); }
+  /* 1fr on the logo, not auto: two auto tracks split the free space and leave
+     the actions floating mid-header instead of flush with the right edge. */
+  .header-inner { grid-template-columns: 1fr auto; }
+  .nav {
+    display: none;
+    position: absolute;
+    inset: var(--header-h) 0 auto 0;
+    background: var(--blue-1000);
+    flex-direction: column;
+    padding: 1rem 1.25rem 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid rgb(255 248 235 / 12%);
+  }
+  .nav.open { display: flex; }
+  .nav-toggle { display: block; }
+  .about-split,
+  .camper-hero,
+  .contact-grid,
+  .offer-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .header-cta { padding: 0.5rem 0.85rem; font-size: 0.75rem; }
+}
+
+/* 8. Menu board ========================================================== */
+
+.menu-head { padding: 2.5rem 0 1rem; text-align: center; }
+.menu-head h1 { font-size: clamp(2.4rem, 5vw, 4rem); margin-bottom: 0.15em; }
+.menu-updated { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+.menu-jump {
+  width: var(--wrap);
+  margin: 0 auto 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  position: sticky;
+  top: var(--header-h);
+  z-index: 20;
+  background: color-mix(in srgb, var(--cream) 94%, transparent);
+  padding: 0.7rem 0;
+}
+.menu-jump a {
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--blue-1000);
+  color: var(--blue-1000);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.menu-jump a:hover {
+  background: var(--blue-1000);
+  color: var(--cream);
+}
+
+.menu-deals {
+  width: min(960px, 100% - 2.5rem);
+  margin: 0 auto 1.5rem;
+  display: grid;
+  grid-template-columns: 1.35fr 0.85fr;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.print-menu {
+  width: min(960px, 100% - 2.5rem);
+  margin: 0 auto 4rem;
+  background: #fff;
+  border-radius: 4px;
+  padding: clamp(0.65rem, 3vw, 2.4rem);
+  box-shadow: var(--shadow);
+}
+.menu-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 2.5rem;
+  margin-bottom: 2.2rem;
+  align-items: start;
+}
+.menu-board.extra { margin-top: 2rem; }
+.menu-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.menu-cat { padding: 0.9rem 1rem 1.05rem; }
+
+.theme-coral {
+  --stroke: var(--menu-coral-medium);
+  --price: var(--menu-coral-medium);
+  --dollar: var(--menu-coral-medium);
+  --ink-item: var(--menu-coral-darkest);
+  --desc: var(--menu-coral-medium);
+  --line: #f4d7d6;
+}
+.theme-blue {
+  --stroke: var(--menu-blue-medium);
+  --price: var(--menu-blue-medium);
+  --dollar: var(--menu-blue-medium);
+  --ink-item: var(--menu-blue-darkest);
+  --desc: var(--menu-blue-medium);
+  --line: var(--menu-blue-lines);
+}
+
+.menu-outline {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.15px var(--stroke, var(--menu-blue-light));
+  margin: 0;
+  line-height: 1.2;
+}
+/* Outlined type is decorative. Fall back to solid ink wherever the stroke
+   will not render, so category names never disappear. */
+@supports not (-webkit-text-stroke: 1px red) {
+  .menu-outline { color: var(--ink-item, var(--menu-blue-darkest)); }
+}
+@media (forced-colors: active) {
+  .menu-outline { color: CanvasText; -webkit-text-stroke: 0; }
+}
+
+.menu-cat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.75rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.15rem;
+}
+.size-labels {
+  display: flex;
+  gap: 0.35rem;
+  width: 5.6rem;
+  justify-content: space-between;
+  color: var(--price, var(--menu-blue-medium));
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.size-labels span { width: 2.6rem; text-align: center; }
+.menu-list { list-style: none; padding: 0; margin: 0; }
+.menu-row { padding: 0.28rem 0 0.18rem; }
+.menu-row.flavor { padding-left: 0.75rem; }
+.item-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.28rem;
+}
+/* Shrinkable, so a long item name wraps instead of pushing the price column
+   past the right edge on narrow screens. */
+.item-name {
+  flex: 0 1 auto;
+  font-size: 0.95rem;
+  color: var(--ink-item, var(--menu-blue-darkest));
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.item-desc {
+  margin: 0.05rem 0 0;
+  padding-left: 0.75rem;
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--desc, var(--menu-blue-medium));
+}
+.leader {
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 8px;
+  margin-top: 0.85rem;
+  background: var(--line, var(--menu-blue-lines));
+}
+.item-prices {
+  display: flex;
+  gap: 0.25rem;
+  min-width: 2.7rem;
+  justify-content: flex-end;
+}
+.item-prices.has-sizes { min-width: 5.6rem; }
+.menu-price {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 1px;
+  width: 2.7rem;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--price, var(--menu-blue-medium));
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+.menu-price.empty { visibility: hidden; }
+.menu-price sup {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--dollar, var(--menu-blue-light));
+  letter-spacing: 0.04em;
+  margin-top: 0.12em;
+}
+.menu-cat-head .menu-price { width: auto; font-size: 1.05rem; }
+
+.flight-card {
+  background: var(--menu-coral-surface);
+  border: 1.5px solid var(--menu-coral-medium);
+  border-radius: 2px;
+  padding: 1.2rem 1.4rem 1.3rem;
+  margin: 0.5rem 0 2.8rem;
+
+  --stroke: var(--menu-coral-medium);
+  --price: var(--menu-coral-medium);
+  --dollar: var(--menu-coral-medium);
+  --ink-item: var(--menu-coral-darkest);
+  --desc: var(--menu-coral-medium);
+}
+.flight-title {
+  margin: 0 0 0.95rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  color: var(--menu-coral-dark);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.flight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.highlight-card {
+  --stroke: var(--menu-coral-medium);
+  --price: var(--menu-coral-medium);
+  --dollar: var(--menu-coral-medium);
+  --ink-item: var(--menu-coral-darkest);
+  --desc: var(--menu-coral-medium);
+  --line: #f4d7d6;
+
+  background: var(--menu-coral-surface);
+  border: 1.5px solid var(--menu-coral-medium);
+  border-radius: 2px;
+  padding: 1.15rem 1.35rem 1.1rem;
+}
+.highlight-card .menu-outline {
+  font-size: 1.45rem;
+  margin-bottom: 0.55rem;
+}
+.highlight-card .menu-price {
+  width: auto;
+  min-width: 6.4rem;
+  justify-content: flex-end;
+  font-size: 1rem;
+}
+.highlight-hh {
+  text-align: center;
+  padding: 1.4rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.highlight-hh .menu-outline { font-size: 1.7rem; margin-bottom: 0.35rem; }
+.highlight-hh .item-name { font-size: 1.15rem; }
+.highlight-hh .item-desc { padding-left: 0; font-size: 0.88rem; }
+
+@media (max-width: 800px) {
+  .print-menu,
+  .menu-deals { width: min(1120px, 100% - 1.5rem); }
+  .menu-deals,
+  .menu-board,
+  .flight-grid { grid-template-columns: 1fr; }
+  .flight-title { white-space: normal; }
+}
+
+@media (max-width: 30rem) {
+  .menu-price { width: 2.4rem; font-size: 0.88rem; }
+  .item-prices.has-sizes { min-width: 5rem; }
+}
+
+/* 9. Forms =============================================================== */
+
+.contact-form {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  display: grid;
+  gap: 0.9rem;
+}
+/* Grid items default to min-width:auto, which lets a wide <select> option
+   push the whole form past the viewport on small screens. */
+.contact-form > * { min-width: 0; }
+.contact-form label,
+.contact-form fieldset { display: grid; gap: 0.35rem; min-width: 0; }
+.contact-form span,
+.contact-form legend { font-size: 0.85rem; font-weight: 600; }
+.contact-form small { font-size: 0.8rem; color: var(--muted); }
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--blue-800);
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  color: inherit;
+}
+.contact-form textarea { min-height: 8rem; resize: vertical; }
+.contact-form .inline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  grid-template-columns: none;
+}
+.contact-form .inline input {
+  width: auto;
+  min-height: 0;
+  flex: none;
+  margin-top: 0.3rem;
+}
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1rem;
+}
+.contact-cards article {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.contact-cards h2 { font-size: 1.1rem; }

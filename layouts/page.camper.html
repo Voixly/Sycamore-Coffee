@@ -1,0 +1,66 @@
+{{ define "main" }}
+<section class="camper-hero">
+  {{ partial "photo.html" (dict
+    "src" "photos/camper-hero.jpg"
+    "alt" "The Sycamore Coffee Camper set up and serving"
+    "ratio" "16/10" "n" 2 "eager" true
+    "sizes" "(max-width: 900px) 94vw, 46vw") }}
+  <div>
+    <p class="eyebrow">Coffee catering</p>
+    <h1>Have our Coffee Camper at your next event!</h1>
+    <p class="lede">Weddings, corporate events, and private parties—our camper brings the brew to you.</p>
+  </div>
+</section>
+
+<section class="contact-grid">
+  <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+    <h2>Inquiry Form</h2>
+    <input type="hidden" name="_subject" value="Coffee Camper inquiry">
+    {{ partial "form-meta.html" . }}
+    <label>
+      <span>Business name</span>
+      <input type="text" name="business_name" autocomplete="organization" required>
+    </label>
+    <label>
+      <span>Contact name</span>
+      <input type="text" name="contact_name" autocomplete="name" required>
+    </label>
+    <label>
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required>
+    </label>
+    <label>
+      <span>Phone number</span>
+      <input type="tel" name="phone" autocomplete="tel" required>
+    </label>
+    <label>
+      <span>Event address</span>
+      <input type="text" name="event_address" required>
+      <small>Street number, street name, city, state, ZIP</small>
+    </label>
+    <label>
+      <span>Date of event</span>
+      <input type="date" name="event_date" required>
+    </label>
+    <label>
+      <span>Number of drinks</span>
+      <input type="number" name="number_of_drinks" min="1" required>
+      <small>Roughly how many drinks you expect to serve</small>
+    </label>
+    <fieldset>
+      <legend>Baked goods wanted?</legend>
+      <label class="inline"><input type="radio" name="baked_goods" value="Yes"> Yes</label>
+      <label class="inline"><input type="radio" name="baked_goods" value="No" checked> No</label>
+    </fieldset>
+    <button class="btn btn-primary" type="submit">Submit Inquiry</button>
+  </form>
+
+  <div>
+    <p class="eyebrow">Catering options</p>
+    <h2>Camper Menu</h2>
+    {{ $sizes := "(max-width: 900px) 94vw, 46vw" }}
+    {{ partial "photo.html" (dict "src" "photos/camper-menu.jpg" "alt" "The Coffee Camper drinks menu board" "ratio" "3/4" "n" 1 "sizes" $sizes) }}
+    {{ partial "photo.html" (dict "src" "photos/camper.jpg" "alt" "The Coffee Camper parked at an outdoor event" "ratio" "3/2" "n" 2 "class" "stacked" "sizes" $sizes) }}
+  </div>
+</section>
+{{ end }}

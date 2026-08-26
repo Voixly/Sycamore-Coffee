@@ -1,0 +1,64 @@
+{{ define "main" }}
+<section class="page-hero">
+  <p class="eyebrow">Coffee crafted for connection</p>
+  <h1>A few words about us</h1>
+  <p class="hero-sub">Sycamore Coffee Co.</p>
+  <p class="lede">At Sycamore Coffee Co., we believe that great coffee is more than just a beverage; it's a catalyst for connection.</p>
+</section>
+
+<section class="about-split">
+  {{ partial "photo.html" (dict
+    "src" "photos/interior.jpg"
+    "alt" "The seating area inside Sycamore Coffee Co"
+    "ratio" "4/5" "n" 2 "eager" true
+    "sizes" "(max-width: 900px) 94vw, 46vw") }}
+  <div>
+    <h2>Sycamore Coffee officially began in 2024.</h2>
+    <h3>The story behind the name “Sycamore”</h3>
+    <p>In 2017, Aaron Menke found himself working at a coffee shop in Tomball, Texas. During one of his breaks, he sat beneath a sycamore tree and struggled to make sense of the trials of life. He decided to open his Bible and began reading the book of James. In that moment, he was reminded that God uses life’s trials for good—shaping and preparing us for His purpose. That promise stayed with him.</p>
+    <p>In 2022, Aaron stepped back into the coffee world, taking a management position at Hebrews Coffee. Though uncertain at first why God had led him back, he soon realized the answer. Through that role, he found the kind of community he had long been praying for.</p>
+    <p>Two years later, in 2024, Hebrews Coffee closed its doors—but not for long. Aaron asked his former employer if he could purchase the equipment and continue the shop as his own. One week after Hebrews closed, he reopened it as Sycamore Coffee with the support of beloved friends and the community.</p>
+  </div>
+</section>
+
+<figure class="verse">
+  <blockquote>
+    <p>Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance. Let perseverance finish its work so that you may be mature and complete, not lacking anything. If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you.</p>
+    <cite>James 1:2–5</cite>
+  </blockquote>
+</figure>
+
+<section class="values">
+  <div class="value">
+    <h3>Connection</h3>
+    <p>Sycamore Coffee Co. brings people together, using great coffee as a way to foster relationships and community bonds.</p>
+  </div>
+  <div class="value">
+    <h3>Welcoming</h3>
+    <p>Our mission is simple: create a place where everyone feels at home, whether they're catching up with old friends or enjoying some quiet time.</p>
+  </div>
+  <div class="value">
+    <h3>Quality</h3>
+    <p>We provide exceptional coffee by sourcing the finest beans and roasting them meticulously, ensuring every cup is a testament to our quality.</p>
+  </div>
+  <div class="value">
+    <h3>Engagement</h3>
+    <p>More than just a coffee shop, we host events like open mic nights and book clubs, supporting local talent and fostering togetherness.</p>
+  </div>
+</section>
+
+<section class="about-gallery">
+  {{ $gallerySizes := "(max-width: 640px) 94vw, (max-width: 900px) 46vw, 31vw" }}
+  {{ partial "photo.html" (dict "src" "photos/about-2.jpg" "alt" "The counter at Sycamore Coffee Co" "ratio" "4/5" "n" 1 "sizes" $gallerySizes) }}
+  {{ partial "photo.html" (dict "src" "photos/sycamore-19.webp" "alt" "The Sycamore Coffee Co team behind the counter" "ratio" "4/5" "n" 2 "sizes" $gallerySizes) }}
+  {{ partial "photo.html" (dict "src" "photos/latte-art.jpg" "alt" "Latte art in a Sycamore cup" "ratio" "4/5" "n" 3 "sizes" $gallerySizes) }}
+</section>
+
+<section class="socials">
+  <div class="section-head">
+    <p class="eyebrow">Testimonials</p>
+    <h2>What our neighbors say</h2>
+  </div>
+  {{ partial "testimonials.html" . }}
+</section>
+{{ end }}

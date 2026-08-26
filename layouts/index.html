@@ -1,0 +1,141 @@
+{{ define "main" }}
+{{ $addr := site.Params.address }}
+
+<section class="band band-navy">
+  <div class="home-wrap home-hero">
+    {{ partial "photo.html" (dict
+      "src" "photos/national-park.webp"
+      "alt" "The Sycamore Coffee Co shop and patio in Magnolia, Texas"
+      "ratio" "4/5" "n" 1 "eager" true
+      "sizes" "(max-width: 980px) 94vw, 51vw") }}
+    <div class="home-hero-copy">
+      <article class="cream-card">
+        <h1>{{ site.Params.tagline }}</h1>
+        <p>{{ site.Params.description }}</p>
+      </article>
+      <article class="cream-card hours-card">
+        <div>
+          <h2>Shop Hours</h2>
+          {{ range site.Params.hours }}
+            <p>{{ .label }}: {{ .value | replaceRE `\s?(AM|PM)` "<sup>$1</sup>" | safeHTML }}</p>
+          {{ end }}
+        </div>
+        <div>
+          <h2>Shop Location</h2>
+          <p>{{ $addr.street }} {{ $addr.suite }},<br>{{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</p>
+          <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener">Visit Sycamore</a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="home-wrap photo-row">
+    {{ $rowSizes := "(max-width: 640px) 94vw, (max-width: 980px) 46vw, 24vw" }}
+    {{ partial "photo.html" (dict "src" "photos/latte-art.jpg" "alt" "A barista serving a seasonal coffee flight" "ratio" "3/4" "n" 2 "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/sycamore-20.webp" "alt" "Iced lattes lined up on the bar" "ratio" "3/4" "n" 3 "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/interior.jpg" "alt" "The seating area inside Sycamore Coffee Co" "ratio" "3/4" "n" 4 "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/sycamore-19.webp" "alt" "The Sycamore Coffee Co team behind the counter" "ratio" "3/4" "n" 5 "sizes" $rowSizes) }}
+  </div>
+</section>
+
+<section class="band band-blush">
+  <div class="home-wrap community-split">
+    {{ partial "photo.html" (dict
+      "src" "photos/mg-4561.webp"
+      "alt" "A barista pulling a shot of espresso at Sycamore"
+      "ratio" "3/4" "n" 6
+      "sizes" "(max-width: 980px) 94vw, 41vw") }}
+    <div class="community-copy">
+      <h2>Rooted in Community</h2>
+      <h3 class="community-subhead">The story behind the name Sycamore</h3>
+      <p>Sycamore Coffee officially began in 2024. In 2017, Aaron Menke found himself working at a coffee shop in Tomball, Texas. During one of his breaks, he sat beneath a sycamore tree and struggled to make sense of the trials of life. He decided to open his Bible and began reading the book of James. In that moment, he was reminded that God uses life’s trials for good—shaping and preparing us for His purpose. That promise stayed with him.</p>
+      <p>In 2022, Aaron stepped back into the coffee world, taking a management position at Hebrews Coffee. Though uncertain at first why God had led him back, he soon realized the answer. Through that role, he found the kind of community he had long been praying for.</p>
+      <p>Two years later, in 2024, Hebrews Coffee closed its doors—but not for long. Aaron asked his former employer if he could purchase the equipment and continue the shop as his own. One week after Hebrews closed, he reopened it as Sycamore Coffee with the support of beloved friends and the community.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-slate" aria-labelledby="favorites-title">
+  <div class="home-wrap">
+    <h2 class="section-title" id="favorites-title">Featured Favorites</h2>
+    <div class="fav-mosaic">
+      {{ $tileSizes := "(max-width: 640px) 94vw, 400px" }}
+      {{ range $i, $tile := slice
+        (dict "src" "photos/brunch.jpg" "alt" "A seasonal coffee flight" "title" "Seasonal Coffee Flights" "cta" "Explore Coffee Flights" "url" "/menu/#flights")
+        (dict "src" "photos/the-sycamore.jpg" "alt" "The Sycamore latte" "title" "The Sycamore Latte" "cta" "Explore the Favorites" "url" "/menu/#favorites")
+        (dict "src" "photos/baked.jpg" "alt" "Brunch plates at Sycamore" "title" "Full Brunch Menu" "cta" "Explore the Full Menu" "url" "/menu/")
+        (dict "src" "photos/flights.jpg" "alt" "Freshly baked goods on the counter" "title" "Freshly Baked Eats" "cta" "Explore Freshly Baked Eats" "url" "/menu/#food") }}
+        {{ $caption := printf `<h3>%s</h3><a class="text-link" href="%s">%s</a>` $tile.title ($tile.url | relURL) $tile.cta | safeHTML }}
+        {{ partial "photo.html" (dict
+          "src" $tile.src "alt" $tile.alt "ratio" "1/1"
+          "n" (add $i 1) "sizes" $tileSizes "caption" $caption) }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="band band-blush" aria-labelledby="community-title">
+  <div class="home-wrap">
+    <h2 class="section-title" id="community-title">Committed to the Community</h2>
+    <div class="commit-grid">
+      <article>
+        <h3>Quality First</h3>
+        <p>We source the finest beans and roast them meticulously to ensure every sip is a testament to our craft.</p>
+      </article>
+      <article>
+        <h3>A Welcoming Space</h3>
+        <p>Designed for everyone—from private rooms for deep work to a playground area for the kids.</p>
+      </article>
+      <article>
+        <h3>Local Engagement</h3>
+        <p>We’re a hub for local talent, hosting everything from open mic nights to community book clubs.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band band-navy">
+  <div class="home-wrap wheels-grid">
+    <div class="wheels-left">
+      <article class="cream-card">
+        <h2>Sycamore on Wheels.</h2>
+        <p>Bringing the brew to you! Our Coffee Camper is available for weddings, corporate events, and private parties. Let us make your next gathering exceptional.</p>
+        <a class="btn btn-primary" href="{{ "/coffee-camper/" | relURL }}">Book the Coffee Camper</a>
+      </article>
+      <article class="cream-card">
+        <h2>Get Coffee Catered</h2>
+        <p>Fully Catered Coffee Cart<br>Have Coffee Will Travel</p>
+        <a class="btn btn-primary" href="{{ "/coffee-catering/" | relURL }}">Coffee Catering</a>
+      </article>
+      {{ partial "photo.html" (dict
+        "src" "photos/sycamore-21.webp"
+        "alt" "A barista serving drinks from the Sycamore coffee cart"
+        "ratio" "16/10" "n" 5
+        "sizes" "(max-width: 980px) 94vw, 45vw"
+        "caption" (`<p class="photo-title">Coffee Cart — Have Coffee Will Travel</p>` | safeHTML)) }}
+    </div>
+    <div class="wheels-right">
+      {{ partial "photo.html" (dict
+        "src" "photos/sycamore-18.webp"
+        "alt" "The Sycamore Coffee Camper parked at an event"
+        "ratio" "3/4" "n" 6
+        "sizes" "(max-width: 980px) 94vw, 53vw"
+        "caption" (`<p class="photo-title">Mobile Coffee — Full Service</p>` | safeHTML)) }}
+    </div>
+  </div>
+</section>
+
+<section class="band band-blush" id="socials" aria-labelledby="socials-title">
+  <div class="home-wrap">
+    <h2 class="section-title" id="socials-title">The Sycamore Socials</h2>
+    {{/* The Elfsight bundle is ~200 KB of third-party JS; site.js injects it
+         only once this section is close to the viewport. */}}
+    <div class="ig-embed" data-elfsight-embed="{{ site.Params.social.elfsight }}">
+      <noscript>
+        <p><a class="btn btn-primary" href="{{ site.Params.social.instagram }}" target="_blank" rel="noopener">See our Instagram</a></p>
+      </noscript>
+    </div>
+    {{ partial "testimonials.html" . }}
+  </div>
+</section>
+{{ end }}

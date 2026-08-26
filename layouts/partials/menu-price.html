@@ -1,0 +1,21 @@
+{{/*
+  Accepts either a bare price string, or a dict of:
+    value  the price
+    label  visually hidden qualifier, e.g. "Hot large" — the printed menu
+           conveys this with column position, which screen readers cannot see
+*/}}
+{{ $value := . }}
+{{ $label := "" }}
+{{ if reflect.IsMap . }}
+  {{ $value = .value }}
+  {{ $label = .label }}
+{{ end }}
+
+{{ if $value }}
+  <span class="menu-price">
+    {{ with $label }}<span class="sr-only">{{ . }} </span>{{ end }}
+    <sup>$</sup>{{ $value }}
+  </span>
+{{ else }}
+  <span class="menu-price empty" aria-hidden="true"></span>
+{{ end }}

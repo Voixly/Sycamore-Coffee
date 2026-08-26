@@ -1,0 +1,94 @@
+{{ define "main" }}
+{{/*
+  One inquiry form serves all three options. Each option's button carries a
+  data-catering value that site.js writes into the form's service select, so
+  the submission says which option was asked for. The select stays visible so
+  it still works with JavaScript off, and so people can correct it.
+*/}}
+{{ $options := slice
+  (dict
+    "id" "camper"
+    "title" "The Coffee Camper"
+    "cta" "Book the Camper"
+    "src" "photos/sycamore-18.webp"
+    "alt" "The Sycamore Coffee Camper parked and serving at an event"
+    "body" "Bring the full Sycamore Coffee Co. experience to your next event with our charming Coffee Camper. Whether it’s a wedding, festival, team offsite, or private celebration in Magnolia and beyond, our mobile cart delivers expertly crafted espresso drinks, housemade syrups, refreshing cold brews, and fresh-baked goods prepared on-site by our friendly baristas. Every cup becomes a moment of connection and delight.")
+  (dict
+    "id" "cart"
+    "title" "Sycamore Coffee Cart"
+    "cta" "Book the Cart"
+    "src" "photos/sycamore-21.webp"
+    "alt" "A barista behind the Sycamore coffee cart and its brass espresso machine"
+    "body" "When the camper will not fit, the cart will. Our baristas set up in lobbies, ballrooms, and back patios with the same espresso, cold brew, and housemade syrups, in a footprint small enough for indoor venues and tight timelines. Ideal for showers, open houses, and office celebrations.")
+  (dict
+    "id" "delivery"
+    "title" "Corporate Delivery"
+    "cta" "Book a Delivery"
+    "src" "photos/cart.webp"
+    "alt" "A barista with insulated coffee dispensers ready for an office delivery"
+    "body" "Keep your team energized with seamless corporate coffee delivery from Sycamore Coffee Co. We offer convenient office drop-offs featuring a selection of crowd-pleasing coffees, pastries, and customizable options tailored to your group. Let us handle the details so your workday runs smoother and tastes better—one delicious delivery at a time.")
+}}
+
+<section class="page-hero">
+  <p class="eyebrow">Coffee Camper</p>
+  <h1>Book our Coffee Camper or Get Coffee Catered for Your Next Event!</h1>
+  <p class="lede">Three ways to bring Sycamore to you—pick the one that fits your space and your guest count.</p>
+</section>
+
+{{ range $i, $opt := $options }}
+  {{/* Alternating tints put a visible edge at every boundary between options. */}}
+  <section class="tint-band{{ if eq (mod $i 2) 0 }} tinted{{ end }}" id="{{ $opt.id }}">
+    <div class="about-split{{ if eq (mod $i 2) 1 }} reverse{{ end }}">
+      {{ partial "photo.html" (dict
+        "src" $opt.src "alt" $opt.alt "ratio" "4/3"
+        "n" (add $i 1) "eager" (eq $i 0)
+        "sizes" "(max-width: 900px) 94vw, 46vw") }}
+      <div>
+        <h2>{{ $opt.title }}</h2>
+        <p>{{ $opt.body }}</p>
+        <a class="btn btn-primary" href="#book" data-catering="{{ $opt.title }}">{{ $opt.cta }}</a>
+      </div>
+    </div>
+  </section>
+{{ end }}
+
+<section class="tint-band tinted-cool" id="book">
+  <div class="contact-grid">
+    <div>
+      <p class="eyebrow">Inquiry</p>
+      <h2>Request to book</h2>
+      <p>Tell us a little about your event and we’ll follow up with availability and a quote.</p>
+    </div>
+    <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+      <input type="hidden" name="_subject" value="Coffee catering request">
+      {{ partial "form-meta.html" . }}
+      <label>
+        <span>What are you booking?</span>
+        <select name="service" data-catering-select required>
+          {{ range $options }}
+            <option value="{{ .title }}">{{ .title }}</option>
+          {{ end }}
+        </select>
+      </label>
+      <label>
+        <span>Your name</span>
+        <input type="text" name="name" autocomplete="name" required>
+      </label>
+      <label>
+        <span>Your email</span>
+        <input type="email" name="email" autocomplete="email" required>
+      </label>
+      <label>
+        <span>Phone</span>
+        <input type="tel" name="phone" autocomplete="tel">
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows="6" required></textarea>
+        <small>Event date, guest count, and what you need</small>
+      </label>
+      <button class="btn btn-primary" type="submit">Request to Book</button>
+    </form>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,141 @@
+{{ define "main" }}
+{{ $menu := partial "menu-data.html" . }}
+
+<header class="menu-head">
+  <h1>Menu</h1>
+  {{ with $menu.updated }}<p class="menu-updated">Updated {{ .Format "January 2, 2006" }}</p>{{ end }}
+</header>
+
+<nav class="menu-jump" aria-label="Menu sections">
+  <a href="#coffee">Coffee</a>
+  <a href="#flights">Flights</a>
+  <a href="#favorites">Favorites</a>
+  <a href="#other-drinks">Other Drinks</a>
+  <a href="#food">Food</a>
+  <a href="#kids">Kids</a>
+</nav>
+
+<div class="menu-deals">
+  {{ with $menu.subscription }}
+  <section class="highlight-card highlight-sub" id="subscription">
+    <h2 class="menu-outline">{{ .name }}</h2>
+    <ul class="menu-list">
+      {{ range .items }}
+        <li class="menu-row">
+          <div class="item-line">
+            <span class="item-name">{{ .name }}</span>
+            {{ if or .small .large }}
+              <span class="leader" aria-hidden="true"></span>
+              <div class="item-prices">
+                {{ with .large }}{{ partial "menu-price.html" . }}{{ else }}{{ partial "menu-price.html" .small }}{{ end }}
+              </div>
+            {{ end }}
+          </div>
+          {{ with .desc }}<p class="item-desc">{{ . }}</p>{{ end }}
+          {{ with .note }}<p class="item-desc">{{ . }}</p>{{ end }}
+        </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  {{ with $menu.happyHour }}
+  <section class="highlight-card highlight-hh" id="happy-hour">
+    <h2 class="menu-outline">{{ .name }}</h2>
+    <ul class="menu-list">
+      {{ range .items }}
+        <li class="menu-row">
+          <div class="item-copy">
+            <span class="item-name">{{ .name }}</span>
+            {{ with .desc }}<p class="item-desc">{{ . }}</p>{{ end }}
+            {{ with .note }}<p class="item-desc">{{ . }}</p>{{ end }}
+          </div>
+        </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+</div>
+
+<div class="print-menu">
+  <section class="menu-board" id="coffee" aria-label="Coffee">
+    <div class="menu-col theme-coral">
+      {{ range $menu.coffeeLeft }}
+        {{ partial "menu-category.html" . }}
+      {{ end }}
+    </div>
+    <div class="menu-col theme-blue">
+      {{ range $menu.coffeeRight }}
+        {{ partial "menu-category.html" . }}
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="flight-card" id="flights">
+    <h2 class="flight-title">{{ $menu.featuredTitle }}</h2>
+    <div class="flight-grid">
+      {{ range $menu.flights }}
+        <article>
+          <header class="menu-cat-head">
+            <h3 class="menu-outline">{{ .name }}</h3>
+            {{ with .headerPrice }}
+              {{ partial "menu-price.html" . }}
+            {{ end }}
+          </header>
+          <ul class="menu-list">
+            {{ range .items }}
+              <li class="menu-row flavor">
+                <div class="item-copy">
+                  <span class="item-name">{{ .name }}</span>
+                  {{ with .desc }}<p class="item-desc">{{ . }}</p>{{ end }}
+                </div>
+              </li>
+            {{ end }}
+          </ul>
+        </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="menu-board extra" id="favorites" aria-label="Favorites">
+    <div class="menu-col theme-coral">
+      {{ with $menu.hotFavorites }}{{ partial "menu-category.html" . }}{{ end }}
+    </div>
+    <div class="menu-col theme-blue">
+      {{ with $menu.icedFavorites }}{{ partial "menu-category.html" . }}{{ end }}
+    </div>
+  </section>
+
+  <section class="menu-board extra" id="other-drinks" aria-label="Other drinks">
+    <div class="menu-col theme-blue">
+      {{ range $i, $cat := $menu.other }}
+        {{ if eq (mod $i 2) 0 }}
+          {{ partial "menu-category.html" $cat }}
+        {{ end }}
+      {{ end }}
+    </div>
+    <div class="menu-col theme-blue">
+      {{ range $i, $cat := $menu.other }}
+        {{ if eq (mod $i 2) 1 }}
+          {{ partial "menu-category.html" $cat }}
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="menu-board extra" id="food" aria-label="Food">
+    {{ range $i, $cat := $menu.food }}
+      <div class="menu-col theme-coral">
+        {{ partial "menu-category.html" $cat }}
+        {{ if and (eq $i 0) $menu.kids }}
+          {{ range $menu.kids }}
+            <div id="kids">
+              {{ partial "menu-category.html" . }}
+            </div>
+          {{ end }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </section>
+</div>
+{{ end }}

@@ -1,0 +1,11 @@
+{{/*
+  Fallback for content pages that do not name a layout in front matter.
+  Every page currently does, so `--printUnusedTemplates` flags this template;
+  it stays so a plain markdown page renders instead of erroring.
+*/}}
+{{ define "main" }}
+  <article class="prose-page page-hero">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+  </article>
+{{ end }}

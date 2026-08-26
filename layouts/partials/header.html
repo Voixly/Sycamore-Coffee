@@ -1,0 +1,20 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="{{ "/" | relURL }}" aria-label="{{ site.Title }} home">
+      <img src="{{ "images/brand/Sycamore_Coffee-Logo_Horizontal-Creme-1.svg" | relURL }}" alt="{{ site.Title }}" width="220" height="40" fetchpriority="high">
+    </a>
+
+    <nav class="nav" id="site-nav" aria-label="Main">
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener"{{ end }}{{ if eq $.RelPermalink .URL }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-primary header-cta" href="{{ site.Params.address.maps }}" target="_blank" rel="noopener">Grab a Cup</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

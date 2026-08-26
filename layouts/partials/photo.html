@@ -1,0 +1,59 @@
+{{/*
+  Polaroid photo, resized and cropped by Hugo.
+
+  src    path under assets/images/, e.g. "photos/interior.jpg"
+  alt    required; pass "" only for decorative images
+  ratio  display aspect ratio, "4/5" (default), "3/4", "1/1", "16/10"
+  sizes  CSS sizes attribute; drives which srcset candidate the browser picks
+  n       rotation seed — odd tilts right, even tilts left
+  eager   true for above-the-fold images so they are not lazy-loaded
+  class   extra classes on the <figure>
+  caption HTML rendered on the polaroid's bottom strip
+*/}}
+{{ $src := .src }}
+{{ $res := resources.Get (printf "images/%s" $src) }}
+{{ if not $res }}
+  {{ errorf "partials/photo.html: no image at assets/images/%s" $src }}
+{{ end }}
+
+{{ $ratio := default "4/5" .ratio }}
+{{ $parts := split $ratio "/" }}
+{{ $rw := float (index $parts 0) }}
+{{ $rh := float (index $parts 1) }}
+
+{{/* Never upscale: drop any candidate wider than the source. */}}
+{{ $widths := slice 400 600 800 1200 1600 }}
+{{ $usable := slice }}
+{{ range $widths }}
+  {{ if le . $res.Width }}{{ $usable = $usable | append . }}{{ end }}
+{{ end }}
+{{ if not $usable }}
+  {{ $usable = slice $res.Width }}
+{{ end }}
+
+{{ $srcset := slice }}
+{{ $fallback := false }}
+{{ range $usable }}
+  {{ $h := int (math.Round (mul (div (float .) $rw) $rh)) }}
+  {{ $img := $res.Fill (printf "%dx%d webp" . $h) }}
+  {{ $srcset = $srcset | append (printf "%s %dw" $img.RelPermalink .) }}
+  {{/* src is only consulted when srcset is unsupported; a mid size is the
+       safer default than the 1600w original. */}}
+  {{ if or (not $fallback) (le . 800) }}
+    {{ $fallback = $img }}
+  {{ end }}
+{{ end }}
+
+{{ $rot := cond (eq (mod (int (default 1 .n)) 2) 1) "rot-2" "rot-n2" }}
+<figure class="polaroid {{ $rot }}{{ if .caption }} has-caption{{ end }}{{ with .class }} {{ . }}{{ end }}">
+  <img
+    src="{{ $fallback.RelPermalink }}"
+    srcset="{{ delimit $srcset ", " }}"
+    sizes="{{ default "(max-width: 640px) 92vw, (max-width: 980px) 46vw, 30vw" .sizes }}"
+    width="{{ $fallback.Width }}"
+    height="{{ $fallback.Height }}"
+    alt="{{ .alt }}"
+    decoding="async"
+    {{ if .eager }}fetchpriority="high"{{ else }}loading="lazy"{{ end }}>
+  {{ with .caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>

@@ -1,0 +1,71 @@
+baseURL: https://sycamorecoffeeco.com/
+languageCode: en-US
+title: Sycamore Coffee Co
+copyright: "© 2026 Sycamore Coffee Co. All Rights Reserved"
+enableRobotsTXT: true
+disableKinds:
+  - taxonomy
+  - term
+  - RSS
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+imaging:
+  quality: 78
+  resampleFilter: Lanczos
+  anchor: Smart
+params:
+  tagline: Coffee Crafted for Connection.
+  description: Nestled in the heart of Magnolia, we’re more than a coffee shop—we’re a place where community grows, one cup at a time.
+  ogImage: images/og.jpg
+  email: info@sycamorecoffeeco.com
+  phone: "(936) 520-7073"
+  phoneHref: tel:9365207073
+  formEndpoint: https://formsubmit.co/info@sycamorecoffeeco.com
+  address:
+    street: 33130 Magnolia Circle
+    suite: Suite B
+    city: Magnolia
+    state: TX
+    zip: "77354"
+    lat: 30.224169
+    lng: -95.5822856
+    maps: https://maps.app.goo.gl/5Vcx6iN5PJUxoEmY6
+  # opens/closes are 24h and feed the schema.org opening hours; omit them to
+  # mark a day closed. label/value are what visitors actually read.
+  hours:
+    - label: Monday–Friday
+      value: 7:30 AM – 4 PM
+      days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+      opens: "07:30"
+      closes: "16:00"
+    - label: Saturday
+      value: 8 AM – 4 PM
+      days: [Saturday]
+      opens: "08:00"
+      closes: "16:00"
+    - label: Sunday
+      value: Closed
+      days: [Sunday]
+  social:
+    instagram: https://www.instagram.com/sycamorecoffeeco/
+    facebook: https://www.facebook.com/p/Sycamore-Coffee-Co-61561258343006/
+    elfsight: 677beb74-710d-4fe0-861b-503569ccd3d2
+  typekit: https://use.typekit.net/jhz5dtz.css
+  menu:
+    featuredTitle: Seasonal Flights
+menu:
+  main:
+    - name: About Us
+      url: /about-us/
+      weight: 1
+    - name: Menu
+      url: /menu/
+      weight: 2
+    - name: Coffee Catering
+      url: /coffee-catering/
+      weight: 3
+    - name: Contact
+      url: /contact/
+      weight: 4

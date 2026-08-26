@@ -1,0 +1,155 @@
+{{/*
+  Loads the newest dated CSV from assets/menus/.
+  Filenames should include YY-MM-DD, e.g. 26-08-18.csv or "Sycamore Menu - 26-08-18.csv".
+  Optional matching 26-08-18.yaml can set featuredTitle.
+*/}}
+{{ $bestDate := "" }}
+{{ $bestFile := false }}
+{{ range resources.Match "menus/*.csv" }}
+  {{ $found := findRE `\d{2}-\d{2}-\d{2}` .Name }}
+  {{ if $found }}
+    {{ $d := index $found 0 }}
+    {{ if or (eq $bestDate "") (gt $d $bestDate) }}
+      {{ $bestDate = $d }}
+      {{ $bestFile = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $rows := slice }}
+{{ if $bestFile }}
+  {{ $rows = $bestFile.Content | transform.Unmarshal }}
+{{ end }}
+
+{{ $items := slice }}
+{{ range $i, $row := $rows }}
+  {{ if and (gt $i 0) (ge (len $row) 3) }}
+    {{ $small := strings.TrimSpace (index $row 3 | default "") }}
+    {{ $large := strings.TrimSpace (index $row 4 | default "") }}
+    {{ $desc := strings.TrimSpace (index $row 5 | default "") }}
+    {{ $note := "" }}
+    {{ if ge (len $row) 7 }}{{ $note = strings.TrimSpace (index $row 6 | default "") }}{{ end }}
+    {{ if or (eq $small "N/A") (eq $small "n/a") }}{{ $small = "" }}{{ end }}
+    {{ if or (eq $large "N/A") (eq $large "n/a") }}{{ $large = "" }}{{ end }}
+    {{ if or (eq $desc "N/A") (eq $desc "n/a") }}{{ $desc = "" }}{{ end }}
+    {{ if or (eq $note "N/A") (eq $note "n/a") }}{{ $note = "" }}{{ end }}
+    {{ $items = $items | append (dict
+      "main" (strings.TrimSpace (index $row 0))
+      "sub" (strings.TrimSpace (index $row 1))
+      "name" (strings.TrimSpace (index $row 2))
+      "small" $small
+      "large" $large
+      "desc" $desc
+      "note" $note
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ $bucket := dict }}
+{{ range $items }}
+  {{ $key := printf "%s\t%s" .main .sub }}
+  {{ $list := index $bucket $key | default slice }}
+  {{ $bucket = merge $bucket (dict $key ($list | append .)) }}
+{{ end }}
+
+{{ $catIndex := dict }}
+{{ range $key, $list := $bucket }}
+  {{ $parts := split $key "\t" }}
+  {{ $main := index $parts 0 }}
+  {{ $sub := index $parts 1 }}
+  {{ $headerPrice := "" }}
+  {{ $flavors := slice }}
+  {{ $hasSmall := false }}
+  {{ $hasLarge := false }}
+  {{ range $list }}
+    {{ if .small }}{{ $hasSmall = true }}{{ end }}
+    {{ if .large }}{{ $hasLarge = true }}{{ end }}
+    {{ if eq .name $sub }}
+      {{ if and .small .large }}
+        {{ $flavors = $flavors | append . }}
+      {{ else }}
+        {{ if .large }}{{ $headerPrice = .large }}{{ else if .small }}{{ $headerPrice = .small }}{{ end }}
+        {{ if or .desc .note }}
+          {{ $flavors = $flavors | append . }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ $flavors = $flavors | append . }}
+    {{ end }}
+  {{ end }}
+  {{ if eq (len $flavors) 0 }}
+    {{ $flavors = $list }}
+    {{ $headerPrice = "" }}
+  {{ end }}
+  {{ $hasSizes := and $hasSmall $hasLarge }}
+  {{ $catIndex = merge $catIndex (dict (printf "%s|%s" $main $sub) (dict
+    "main" $main
+    "name" $sub
+    "headerPrice" $headerPrice
+    "hasSizes" $hasSizes
+    "items" $flavors
+  )) }}
+{{ end }}
+
+{{ $pick := "" }}
+{{ $coffeeLeft := slice }}
+{{ range slice "Hot Espresso" "Drip Coffee" }}
+  {{ with index $catIndex (printf "Coffee|%s" .) }}{{ $coffeeLeft = $coffeeLeft | append . }}{{ end }}
+{{ end }}
+{{ $coffeeRight := slice }}
+{{ range slice "Iced Espresso" "Cold Brew" }}
+  {{ with index $catIndex (printf "Coffee|%s" .) }}{{ $coffeeRight = $coffeeRight | append . }}{{ end }}
+{{ end }}
+{{ $flights := slice }}
+{{ range slice "Matcha Flight" "Coffee Flight" }}
+  {{ with index $catIndex (printf "Flight|%s" .) }}{{ $flights = $flights | append . }}{{ end }}
+{{ end }}
+{{ $other := slice }}
+{{ range slice "Iced Tea" "Iced Tea Latte" "Frappe" "Smoothie" "Hot Tea" "Hot Tea Latte" "Lemonade" }}
+  {{ with index $catIndex (printf "Other Drinks|%s" .) }}{{ $other = $other | append . }}{{ end }}
+{{ end }}
+{{ $food := slice }}
+{{ range slice "Baked Goods" "Eats" }}
+  {{ with index $catIndex (printf "Food|%s" .) }}{{ $food = $food | append . }}{{ end }}
+{{ end }}
+{{ $kids := slice }}
+{{ range slice "Kids Snack Pack" }}
+  {{ with index $catIndex (printf "Kids|%s" .) }}{{ $kids = $kids | append . }}{{ end }}
+{{ end }}
+{{ $happyHour := false }}
+{{ with index $catIndex "Promotions|Happy Hour" }}{{ $happyHour = . }}{{ end }}
+{{ $subscription := false }}
+{{ with index $catIndex "Promotions|Coffee Subscription" }}{{ $subscription = . }}{{ end }}
+{{/* Hot and iced favorites stay separate categories. Interleaving them into
+     one four-price row was unreadable on a phone. */}}
+{{ $hotFavorites := false }}
+{{ with index $catIndex "Coffee|Hot Favorites" }}{{ $hotFavorites = . }}{{ end }}
+{{ $icedFavorites := false }}
+{{ with index $catIndex "Coffee|Iced Favorites" }}{{ $icedFavorites = . }}{{ end }}
+
+{{ $yy := int (substr $bestDate 0 2) }}
+{{ $year := add 2000 $yy }}
+{{ $updated := time.AsTime (printf "%d-%s-%s" $year (substr $bestDate 3 2) (substr $bestDate 6 2)) }}
+
+{{ $featuredTitle := "Seasonal Flights" }}
+{{ with site.Params.menu.featuredTitle }}{{ $featuredTitle = . }}{{ end }}
+{{ with resources.Get (printf "menus/%s.yaml" $bestDate) }}
+  {{ $meta := .Content | transform.Unmarshal }}
+  {{ with $meta.featuredTitle }}{{ $featuredTitle = . }}{{ end }}
+{{ end }}
+
+{{ return (dict
+  "dateKey" $bestDate
+  "updated" $updated
+  "featuredTitle" $featuredTitle
+  "coffeeLeft" $coffeeLeft
+  "coffeeRight" $coffeeRight
+  "flights" $flights
+  "hotFavorites" $hotFavorites
+  "icedFavorites" $icedFavorites
+  "other" $other
+  "food" $food
+  "kids" $kids
+  "happyHour" $happyHour
+  "subscription" $subscription
+) }}

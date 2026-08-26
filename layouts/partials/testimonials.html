@@ -1,0 +1,13 @@
+<div class="quote-grid">
+  {{ range hugo.Data.testimonials }}
+    <blockquote>
+      <p>{{ .quote }}</p>
+      <footer>
+        {{ with resources.Get (printf "images/%s" .avatar) }}
+          <img src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async">
+        {{ end }}
+        <cite>{{ .name }}</cite>
+      </footer>
+    </blockquote>
+  {{ end }}
+</div>

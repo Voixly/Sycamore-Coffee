@@ -1,0 +1,63 @@
+{{ define "main" }}
+<section class="page-hero">
+  <p class="eyebrow">We’d love to hear from you</p>
+  <h1>Contact Us</h1>
+  <p class="lede">Questions, catering, or just saying hello—drop us a note.</p>
+</section>
+
+{{ $addr := site.Params.address }}
+<section class="contact-grid">
+  <div class="contact-cards">
+    <article>
+      <h2>Phone</h2>
+      <p><a href="{{ site.Params.phoneHref | safeURL }}">{{ site.Params.phone }}</a></p>
+    </article>
+    <article>
+      <h2>Email</h2>
+      <p><a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a></p>
+    </article>
+    <article>
+      <h2>Address</h2>
+      <p><a href="{{ $addr.maps }}" target="_blank" rel="noopener">{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</a></p>
+    </article>
+    <article>
+      <h2>Hours</h2>
+      {{ range site.Params.hours }}
+        <p>{{ .label }}: {{ .value }}</p>
+      {{ end }}
+    </article>
+  </div>
+
+  <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+    <h2>Do you have a question?</h2>
+    <input type="hidden" name="_subject" value="Sycamore Coffee Co website inquiry">
+    {{ partial "form-meta.html" . }}
+    <label>
+      <span>Your name</span>
+      <input type="text" name="name" autocomplete="name" required>
+    </label>
+    <label>
+      <span>Your email</span>
+      <input type="email" name="email" autocomplete="email" required>
+    </label>
+    <label>
+      <span>Subject</span>
+      <input type="text" name="subject">
+    </label>
+    <label>
+      <span>Message</span>
+      <textarea name="message" rows="6" required></textarea>
+    </label>
+    <button class="btn btn-primary" type="submit">Send a message</button>
+  </form>
+</section>
+
+<div class="map-embed">
+  <iframe
+    title="Map of Sycamore Coffee Co"
+    src="https://maps.google.com/maps?q=33130%20Magnolia%20Cir%20Suite%20B%20Magnolia%20TX%2077354&t=&z=15&ie=UTF8&iwloc=&output=embed"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen></iframe>
+</div>
+{{ end }}
