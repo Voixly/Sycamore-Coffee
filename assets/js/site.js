@@ -265,13 +265,8 @@
       statusEl.textContent = title;
       todayEl.textContent = row ? `Today · ${row.label}` : "Today · Closed";
 
-      if (state === "closed") {
-        mapsEl.hidden = true;
-        mapsEl.removeAttribute("href");
-      } else {
-        mapsEl.hidden = false;
-        mapsEl.href = data.maps;
-      }
+      mapsEl.hidden = state === "closed";
+      mapsEl.href = data.maps;
     };
 
     trigger.addEventListener("click", (event) => {

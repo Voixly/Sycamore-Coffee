@@ -7,6 +7,19 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{{ if .IsHome }}
+  {{/* Same 8/9 800w fill as layouts/index.html hero. Before Typekit so the
+       preload scanner can start LCP without waiting on fonts. */}}
+  {{ $hero := resources.Get "images/photos/national-park.webp" }}
+  {{ if $hero }}
+    {{ $w := 800 }}
+    {{ if le $w $hero.Width }}
+      {{ $h := int (math.Round (mul (div (float $w) 8.0) 9.0)) }}
+      {{ $img := $hero.Fill (printf "%dx%d webp" $w $h) }}
+      <link rel="preload" as="image" href="{{ $img.RelPermalink }}" fetchpriority="high">
+    {{ end }}
+  {{ end }}
+{{ end }}
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $desc }}">
 <link rel="canonical" href="{{ .Permalink }}">
@@ -33,28 +46,6 @@
 <link rel="stylesheet" href="{{ site.Params.typekit }}">
 {{ range site.Params.typekitWoff2 }}
   <link rel="preload" as="font" type="font/woff2" href="{{ . }}" crossorigin>
-{{ end }}
-
-{{ if .IsHome }}
-  {{/* Keep crop/sizes in sync with the homepage hero in layouts/index.html. */}}
-  {{ $hero := resources.Get "images/photos/national-park.webp" }}
-  {{ if $hero }}
-    {{ $rw := 8.0 }}
-    {{ $rh := 9.0 }}
-    {{ $srcset := slice }}
-    {{ $fallback := false }}
-    {{ range slice 400 600 800 }}
-      {{ if le . $hero.Width }}
-        {{ $h := int (math.Round (mul (div (float .) $rw) $rh)) }}
-        {{ $img := $hero.Fill (printf "%dx%d webp" . $h) }}
-        {{ $srcset = $srcset | append (printf "%s %dw" $img.RelPermalink .) }}
-        {{ if or (not $fallback) (le . 800) }}{{ $fallback = $img }}{{ end }}
-      {{ end }}
-    {{ end }}
-    {{ with $fallback }}
-      <link rel="preload" as="image" href="{{ .RelPermalink }}" imagesrcset="{{ delimit $srcset ", " }}" imagesizes="(max-width: 980px) 94vw, 51vw" fetchpriority="high">
-    {{ end }}
-  {{ end }}
 {{ end }}
 
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
