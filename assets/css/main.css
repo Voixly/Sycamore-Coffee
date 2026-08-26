@@ -106,6 +106,7 @@ h1, h2, h3, h4,
 .hero-sub,
 .photo-title,
 .hours-status,
+.hours-sub,
 .verse p {
   font-kerning: normal;
   font-variant-ligatures: common-ligatures contextual;
@@ -347,8 +348,16 @@ main:focus { outline: none; }
 .hours-status {
   font-family: var(--display);
   font-size: clamp(1.8rem, 4vw, 2.4rem);
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.25rem;
   line-height: 1.1;
+  letter-spacing: 0;
+}
+.hours-sub {
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  line-height: 1.3;
+  margin: 0 0 0.85rem;
+  color: var(--blue-1000);
   letter-spacing: 0;
 }
 .hours-today {
@@ -396,6 +405,38 @@ main:focus { outline: none; }
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--blue-1000);
+}
+.hours-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.site-footer .hours-heading { margin: 0 0 0.75rem; }
+.hours-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+.hours-badge[data-state="open"] {
+  background: #d7ead8;
+  color: #215e32;
+}
+.hours-badge[data-state="soon"],
+.hours-badge[data-state="opening"] {
+  background: var(--harvest-600);
+  color: var(--harvest-900);
+}
+.hours-badge[data-state="closed"] {
+  background: var(--menu-coral-surface);
+  color: var(--coral-900);
 }
 .footer-inner {
   width: var(--wrap);
@@ -561,7 +602,7 @@ main:focus { outline: none; }
 
 .commit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
   gap: 2.2rem;
   padding-bottom: 4.2rem;
 }
@@ -1093,3 +1134,4 @@ main:focus { outline: none; }
   padding: 1.25rem;
 }
 .contact-cards h2 { font-size: 1.55rem; }
+.contact-cards .hours-heading { margin: 0 0 0.6em; }

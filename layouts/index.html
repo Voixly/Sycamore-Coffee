@@ -1,5 +1,6 @@
 {{ define "main" }}
 {{ $addr := site.Params.address }}
+{{ $menu := partial "menu-data.html" . }}
 
 <section class="band band-navy">
   <div class="home-wrap home-hero">
@@ -93,6 +94,14 @@
         <h3>Local Engagement</h3>
         <p>We’re a hub for local talent, hosting everything from open mic nights to community book clubs.</p>
       </article>
+      {{ with $menu.happyHour }}
+        {{ $deal := index .items 0 }}
+        <article>
+          <h3>{{ .name }}</h3>
+          <p>{{ $deal.name }}{{ with $deal.desc }}, {{ . }}{{ end }}. Pull up a chair and stay awhile.</p>
+          <p><a class="text-link" href="{{ "/menu/#happy-hour" | relURL }}">See the menu</a></p>
+        </article>
+      {{ end }}
     </div>
   </div>
 </section>

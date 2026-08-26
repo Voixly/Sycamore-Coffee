@@ -28,7 +28,7 @@
       <p><a href="{{ $addr.maps }}" target="_blank" rel="noopener">{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</a></p>
     </article>
     <article>
-      <h2>Hours</h2>
+      <h2 class="hours-heading">Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
       {{ range site.Params.hours }}
         <p>{{ .label }}: {{ .value }}</p>
       {{ end }}

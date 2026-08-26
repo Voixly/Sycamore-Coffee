@@ -210,9 +210,19 @@
     }
 
     const statusEl = dialog.querySelector(".hours-status");
+    const subEl = dialog.querySelector(".hours-sub");
     const todayEl = dialog.querySelector(".hours-today");
     const mapsEl = dialog.querySelector("[data-hours-maps]");
     const closeBtn = dialog.querySelector("[data-hours-close]");
+    const WEEKDAYS = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
 
     const minutesNow = () => {
       const parts = new Intl.DateTimeFormat("en-US", {
@@ -237,37 +247,112 @@
       return h * 60 + m;
     };
 
-    const paint = () => {
+    const formatOpen = (stamp) => {
+      const [h, m] = stamp.split(":").map(Number);
+      const suffix = h >= 12 ? "PM" : "AM";
+      const hour = h % 12 || 12;
+      if (!m) {
+        return `${hour} ${suffix}`;
+      }
+      return `${hour}:${String(m).padStart(2, "0")} ${suffix}`;
+    };
+
+    const nextOpen = (fromDay, minutes) => {
+      const start = WEEKDAYS.indexOf(fromDay);
+      if (start < 0) {
+        return null;
+      }
+      for (let i = 0; i <= 7; i++) {
+        const day = WEEKDAYS[(start + i) % 7];
+        const item = (data.days || []).find((row) => row.day === day && row.opens);
+        if (!item) {
+          continue;
+        }
+        const openMin = toMinutes(item.opens);
+        if (i === 0 && (openMin === null || minutes >= openMin)) {
+          continue;
+        }
+        return item;
+      }
+      return null;
+    };
+
+    const closedLine = (fromDay, minutes) => {
+      const next = nextOpen(fromDay, minutes);
+      if (!next) {
+        return "Sorry we missed you.";
+      }
+      return `Sorry we missed you. We’ll be serving coffee again ${next.day} at ${formatOpen(next.opens)}.`;
+    };
+
+    const BADGE = {
+      open: "Open",
+      soon: "Closing Soon",
+      opening: "Opening Soon",
+      closed: "Closed Today",
+    };
+
+    const snapshot = () => {
       const now = minutesNow();
       const row = (data.days || []).find((item) => item.day === now.day);
       const opens = toMinutes(row && row.opens);
       const closes = toMinutes(row && row.closes);
       const windowMin = Number(data.soonMinutes) || 30;
       let state = "closed";
-      let title = "Closed";
+      let title = "We Are Closed";
+      let sub = closedLine(now.day, now.minutes);
 
       if (opens !== null && closes !== null) {
         if (now.minutes >= opens && now.minutes < closes) {
           if (closes - now.minutes <= windowMin) {
             state = "soon";
             title = "Closing Soon";
+            sub = "Come grab one before we close";
           } else {
             state = "open";
             title = "We Are Open";
+            sub = "Come Get a Cup of Coffee";
           }
         } else if (now.minutes < opens && opens - now.minutes <= windowMin) {
           state = "opening";
           title = "Opening Soon";
+          sub = "Coffee will be Ready Shortly";
         }
       }
 
-      dialog.dataset.state = state;
-      statusEl.textContent = title;
-      todayEl.textContent = row ? `Today · ${row.label}` : "Today · Closed";
+      return {
+        state,
+        title,
+        sub,
+        today: row ? `Today · ${row.label}` : "Today · Closed",
+        badge: BADGE[state] || BADGE.closed,
+      };
+    };
 
-      mapsEl.hidden = state === "closed";
+    const paintBadges = (snap) => {
+      for (const el of document.querySelectorAll("[data-hours-badge]")) {
+        el.hidden = false;
+        el.dataset.state = snap.state;
+        el.textContent = snap.badge;
+      }
+    };
+
+    const paintDialog = (snap) => {
+      dialog.dataset.state = snap.state;
+      statusEl.textContent = snap.title;
+      subEl.textContent = snap.sub;
+      todayEl.textContent = snap.today;
+      mapsEl.hidden = snap.state === "closed";
       mapsEl.href = data.maps;
     };
+
+    const paint = () => {
+      const snap = snapshot();
+      paintDialog(snap);
+      paintBadges(snap);
+    };
+
+    paint();
 
     trigger.addEventListener("click", (event) => {
       event.preventDefault();

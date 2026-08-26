@@ -13,7 +13,7 @@
     </div>
 
     <div>
-      <h2>Shop Hours</h2>
+      <h2 class="hours-heading">Shop Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
       {{ range site.Params.hours }}
         <p class="hours-row"><span>{{ .label }}</span> <span>{{ .value }}</span></p>
       {{ end }}
