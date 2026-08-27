@@ -26,7 +26,7 @@
         </div>
         <div>
           <h2>Shop Location</h2>
-          <p>{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</p>
+          <p><a href="{{ $addr.maps }}" target="_blank" rel="noopener">{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</a></p>
         </div>
         <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener">Visit Sycamore</a>
       </article>

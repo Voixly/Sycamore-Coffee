@@ -341,7 +341,6 @@
       dialog.dataset.state = snap.state;
       statusEl.textContent = snap.title;
       subEl.textContent = snap.sub;
-      mapsEl.hidden = snap.state === "closed";
       mapsEl.href = data.maps;
     };
 

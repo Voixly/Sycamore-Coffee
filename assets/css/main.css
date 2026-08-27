@@ -383,7 +383,6 @@ main:focus { outline: none; }
   margin: 0 0 1.15rem;
   color: var(--blue-1000);
 }
-.hours-dialog[data-state="closed"] [data-hours-maps] { display: none; }
 .hours-dialog .btn { width: 100%; }
 
 .nav-toggle {
