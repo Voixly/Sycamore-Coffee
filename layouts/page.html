@@ -4,8 +4,10 @@
   it stays so a plain markdown page renders instead of erroring.
 */}}
 {{ define "main" }}
-  <article class="prose-page page-hero">
-    <h1>{{ .Title }}</h1>
-    {{ .Content }}
-  </article>
+  <section class="tint-band theme-coral">
+    <article class="prose-page page-hero">
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+    </article>
+  </section>
 {{ end }}

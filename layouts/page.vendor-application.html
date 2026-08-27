@@ -4,6 +4,7 @@
   <h1>Looking to become a Market Vendor?</h1>
 </section>
 
+<section class="tint-band theme-coral">
 <section class="prose-page">
   {{ partial "photo.html" (dict
     "src" "photos/market-day.jpg"
@@ -23,7 +24,9 @@
   <p><strong>Do you limit competing products?</strong> Yes, we do our best to not schedule duplicating products and ensure the success of our returning vendors.</p>
   <p><strong>What is the fee to reserve space in a market?</strong> You will have the option to reserve a space after you have completed this application and the vendor agreement. All of our markets offer a tiered payment option. Each fee comes with a $2 online processing fee to reserve a 10' × 10' booth space.</p>
 </section>
+</section>
 
+<section class="tint-band theme-blue">
 <section class="contact-grid">
   <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
     <h2>Vendor Application</h2>
@@ -110,5 +113,6 @@
   <div>
     <p>After you apply, please review and sign the <a class="text-link" href="{{ "/vendor-agreement/" | relURL }}">vendor agreement</a>.</p>
   </div>
+</section>
 </section>
 {{ end }}
