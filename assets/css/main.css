@@ -156,23 +156,6 @@ ul { margin: 0 0 1.25em; padding-left: 1.2em; }
   white-space: nowrap;
 }
 
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -4rem;
-  z-index: 100;
-  background: var(--cream);
-  color: var(--ink);
-  padding: 0.7rem 1.1rem;
-  border-radius: 0 0 var(--radius) var(--radius);
-  font-weight: 600;
-  text-decoration: none;
-  transition: top 0.15s ease;
-}
-.skip-link:focus { top: 0; color: var(--ink); }
-
-main:focus { outline: none; }
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

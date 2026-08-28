@@ -4,9 +4,8 @@
     {{ partial "head.html" . }}
   </head>
   <body class="{{ if .IsHome }}page-home{{ else if .File }}page-{{ .File.BaseFileName }}{{ else }}page-default{{ end }}">
-    <a class="skip-link" href="#main">Skip to content</a>
     {{ partial "header.html" . }}
-    <main id="main" tabindex="-1">
+    <main id="main">
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
