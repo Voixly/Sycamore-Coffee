@@ -61,7 +61,7 @@
       <h2>Request to book</h2>
       <p>Tell us a little about your event and we’ll follow up with availability and a quote.</p>
     </div>
-    <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+    <form class="contact-form contact-form--float" action="{{ site.Params.formEndpoint }}" method="POST">
       <input type="hidden" name="_subject" value="Request to Book">
       {{ partial "form-meta.html" . }}
       <label>
@@ -75,19 +75,19 @@
       </label>
       <label>
         <span>Your name</span>
-        <input type="text" name="name" autocomplete="name" required>
+        <input type="text" name="name" autocomplete="name" placeholder=" " required>
       </label>
       <label>
         <span>Your email</span>
-        <input type="email" name="email" autocomplete="email" required>
+        <input type="email" name="email" autocomplete="email" placeholder=" " required>
       </label>
       <label>
         <span>Phone</span>
-        <input type="tel" name="phone" autocomplete="tel">
+        <input type="tel" name="phone" autocomplete="tel" placeholder=" ">
       </label>
       <label>
         <span>Message</span>
-        <textarea name="message" rows="6" required></textarea>
+        <textarea name="message" rows="6" placeholder=" " required></textarea>
         <small>Event date, guest count, and what you need</small>
       </label>
       <button class="btn btn-primary" type="submit">Request to Book</button>

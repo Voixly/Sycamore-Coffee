@@ -823,6 +823,62 @@ main:has(.invite-band) + .site-footer,
   background: var(--white);
   border-color: var(--white);
 }
+.page-contact .page-hero h1,
+.page-contact .contact-cards h2,
+.page-contact .contact-form h2 {
+  color: var(--harvest-1000);
+}
+.page-contact .eyebrow,
+.page-contact .lede,
+.page-contact .contact-cards p,
+.page-contact .contact-form span,
+.page-contact .contact-form small {
+  color: var(--harvest-900);
+}
+.page-contact .page-hero a,
+.page-contact .contact-cards a {
+  color: var(--harvest-1000);
+}
+.page-contact .page-hero a:hover,
+.page-contact .contact-cards a:hover {
+  color: var(--harvest-800);
+}
+.page-contact .contact-form {
+  color: var(--harvest-1000);
+}
+.page-contact .contact-form span,
+.page-contact .contact-form small,
+.page-contact .contact-form .form-status {
+  color: var(--harvest-1000);
+}
+.page-contact .contact-form small {
+  color: var(--harvest-900);
+}
+.page-contact .contact-form input,
+.page-contact .contact-form textarea,
+.page-contact .contact-form select {
+  border-color: var(--harvest-800);
+  color: var(--harvest-1000);
+}
+.page-contact .contact-form .btn-primary {
+  background: var(--harvest-800);
+  color: var(--white);
+}
+.page-contact .contact-form .btn-primary:hover {
+  background: var(--harvest-900);
+  color: var(--white);
+}
+.page-contact .contact-form--float > label span {
+  color: var(--harvest-1000);
+}
+.page-contact .contact-form input::placeholder,
+.page-contact .contact-form textarea::placeholder {
+  color: var(--harvest-800);
+  opacity: 1;
+}
+.page-contact .hours-badge[data-state="open"] {
+  color: var(--mint-1000);
+}
 
 /* Full-bleed tint behind a wrapped section. Alternating tinted and untinted
    bands puts a visible edge at every boundary without drawing rules. */
@@ -1401,6 +1457,81 @@ main:has(.invite-band) + .site-footer,
   color: inherit;
 }
 .contact-form textarea { min-height: 8rem; resize: vertical; }
+.contact-form--float > label:not(.inline) {
+  position: relative;
+  gap: 0;
+}
+.contact-form--float > label:not(.inline) span {
+  position: absolute;
+  left: 0.85rem;
+  right: 0.85rem;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+  transition: font-size 0.12s ease, top 0.12s ease, transform 0.12s ease;
+}
+.contact-form--float > label:has(:focus) span,
+.contact-form--float > label:has(input:not(:placeholder-shown)) span,
+.contact-form--float > label:has(input[type="date"]) span {
+  top: 0.4rem;
+  transform: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.contact-form--float > label:not(.inline):has(select) span {
+  top: 0.4rem;
+  transform: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.contact-form--float > label:not(.inline):has(textarea) span {
+  top: 1.3rem;
+  transform: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.contact-form--float > label:not(.inline):has(textarea:focus) span,
+.contact-form--float > label:not(.inline):has(textarea:valid) span {
+  top: 0.4rem;
+  transform: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.contact-form--float > label:has(input:-webkit-autofill) span,
+.contact-form--float > label:has(textarea:-webkit-autofill) span {
+  top: 0.4rem;
+  transform: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.contact-form--float > label:not(.inline) :is(input, textarea, select) {
+  min-height: 3.15rem;
+  padding: 1.35rem 0.8rem 0.4rem;
+  border-radius: 4px;
+}
+.contact-form--float > label:not(.inline):nth-child(1 of label:not(.inline)) :is(input, textarea, select) {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.contact-form--float > label:not(.inline):nth-last-child(1 of label:not(.inline)) :is(input, textarea, select) {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+.contact-form--float > label textarea {
+  min-height: 8rem;
+  padding-top: 1.6rem;
+}
+.contact-form--float > label:not(.inline) :focus {
+  border-color: var(--blue-1000);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-form--float > label span { transition: none; }
+}
 .contact-form .inline {
   display: flex;
   align-items: flex-start;
@@ -1419,6 +1550,9 @@ main:has(.invite-band) + .site-footer,
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+.cf-turnstile {
+  margin: 0.15rem 0;
 }
 .contact-cards {
   display: grid;

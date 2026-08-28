@@ -90,39 +90,39 @@
 
 <section class="tint-band theme-blue">
 <section class="contact-grid">
-  <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+  <form class="contact-form contact-form--float" action="{{ site.Params.formEndpoint }}" method="POST">
     <h2>Sign the agreement</h2>
     <p>By signing below, I agree to abide by the agreement details above.</p>
     <input type="hidden" name="_subject" value="Vendor agreement signature">
     {{ partial "form-meta.html" . }}
     <label>
       <span>Business name</span>
-      <input type="text" name="business_name" autocomplete="organization" required>
+      <input type="text" name="business_name" autocomplete="organization" placeholder=" " required>
     </label>
     <label>
       <span>Contact name</span>
-      <input type="text" name="contact_name" autocomplete="name" required>
+      <input type="text" name="contact_name" autocomplete="name" placeholder=" " required>
     </label>
     <label>
       <span>Email</span>
-      <input type="email" name="email" autocomplete="email" required>
+      <input type="email" name="email" autocomplete="email" placeholder=" " required>
     </label>
     <label>
       <span>Phone</span>
-      <input type="tel" name="phone" autocomplete="tel" required>
+      <input type="tel" name="phone" autocomplete="tel" placeholder=" " required>
     </label>
     <label>
       <span>Website / social</span>
-      <input type="text" name="website_social" autocomplete="url">
+      <input type="text" name="website_social" autocomplete="url" placeholder=" ">
     </label>
     <label>
       <span>Full legal name</span>
-      <input type="text" name="legal_name" autocomplete="name" required>
+      <input type="text" name="legal_name" autocomplete="name" placeholder=" " required>
       <small>Typing your name here acts as your signature</small>
     </label>
     <label>
       <span>Today's date</span>
-      <input type="date" name="sign_date" required>
+      <input type="date" name="sign_date" placeholder=" " required>
     </label>
     <label class="inline">
       <input type="checkbox" name="accept" value="Yes" required>

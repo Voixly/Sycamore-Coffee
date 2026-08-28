@@ -39,25 +39,25 @@
     </article>
   </div>
 
-  <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+  <form class="contact-form contact-form--float" action="{{ site.Params.formEndpoint }}" method="POST">
     <h2>Do you have a question?</h2>
     <input type="hidden" name="_subject" value="Website inquiry">
     {{ partial "form-meta.html" . }}
     <label>
       <span>Your name</span>
-      <input type="text" name="name" autocomplete="name" required>
+      <input type="text" name="name" autocomplete="name" placeholder=" " required>
     </label>
     <label>
       <span>Your email</span>
-      <input type="email" name="email" autocomplete="email" required>
+      <input type="email" name="email" autocomplete="email" placeholder=" " required>
     </label>
     <label>
       <span>Subject</span>
-      <input type="text" name="subject">
+      <input type="text" name="subject" placeholder=" ">
     </label>
     <label>
       <span>Message</span>
-      <textarea name="message" rows="6" required></textarea>
+      <textarea name="message" rows="6" placeholder=" " required></textarea>
     </label>
     <button class="btn btn-primary" type="submit">Send a message</button>
   </form>

@@ -445,6 +445,79 @@
     });
   };
 
+  const loadTurnstileScript = () =>
+    new Promise((resolve, reject) => {
+      if (window.turnstile) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src =
+        "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = reject;
+      document.head.append(script);
+    });
+
+  const initTurnstile = async () => {
+    const hosts = document.querySelectorAll("[data-turnstile-host]");
+
+    if (!hosts.length) {
+      return;
+    }
+
+    let siteKey = hosts[0].getAttribute("data-sitekey") || "";
+
+    if (!siteKey) {
+      try {
+        const res = await fetch("/api/turnstile-key");
+        const data = await res.json();
+        siteKey = String(data.siteKey || "").trim();
+      } catch {
+        return;
+      }
+    }
+
+    if (!siteKey) {
+      return;
+    }
+
+    try {
+      await loadTurnstileScript();
+    } catch {
+      return;
+    }
+
+    if (!window.turnstile) {
+      return;
+    }
+
+    for (const host of hosts) {
+      window.turnstile.render(host, {
+        sitekey: siteKey,
+        action: "turnstile-spin-v1",
+        theme: "light",
+        size: "flexible",
+      });
+    }
+  };
+
+  const resetTurnstile = (form) => {
+    if (!window.turnstile) {
+      return;
+    }
+
+    for (const host of form.querySelectorAll("[data-turnstile-host]")) {
+      try {
+        window.turnstile.reset(host);
+      } catch {
+        /* widget not mounted */
+      }
+    }
+  };
+
   const initForms = () => {
     for (const form of document.querySelectorAll(".contact-form")) {
       const status = form.querySelector("[data-form-status]");
@@ -488,6 +561,7 @@
           if (url.includes("/thank-you/")) {
             setStatus("success", "Thanks — we got it and will be in touch.");
             form.reset();
+            resetTurnstile(form);
             return;
           }
 
@@ -515,5 +589,7 @@
   initSocialEmbed();
   initDateMins();
   initHashScroll();
-  initForms();
+  initTurnstile().finally(() => {
+    initForms();
+  });
 })();

@@ -20,6 +20,9 @@ call [(936) 520-7073](tel:+19365207073) and we will pick it up from there.
   const notes = {
     "missing-key": "RESEND_API_KEY is not set on this Cloudflare environment (Production and Preview are separate).",
     "missing-from": "FORM_FROM or FORM_TO is not set on this Cloudflare environment.",
+    "turnstile": "The spam check failed. Reload the page and try again.",
+    "turnstile-missing": "Complete the spam check before sending.",
+    "turnstile-error": "The spam check could not reach Cloudflare. Try again in a moment.",
     "resend-401": "Resend rejected the API key (401). Check RESEND_API_KEY.",
     "resend-403": "Resend rejected the From address (403). Verify sycamorecoffeeco.com in Resend, or until then send from onboarding@resend.dev to your Resend account email only.",
     "resend-422": "Resend rejected the payload (422). Check FORM_FROM and FORM_TO are valid addresses.",

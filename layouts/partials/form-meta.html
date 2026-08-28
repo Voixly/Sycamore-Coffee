@@ -2,4 +2,10 @@
 <div class="hp" aria-hidden="true">
   <label>Leave this field empty<input type="text" name="_honey" tabindex="-1" autocomplete="off"></label>
 </div>
+<div
+  class="cf-turnstile"
+  data-turnstile-host
+  data-action="turnstile-spin-v1"
+  {{ with site.Params.turnstileSiteKey }}data-sitekey="{{ . }}"{{ end }}
+></div>
 <p class="form-status" data-form-status aria-live="polite" hidden></p>

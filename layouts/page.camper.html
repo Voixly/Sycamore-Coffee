@@ -16,38 +16,38 @@
 
 <section class="tint-band theme-blue">
   <div class="contact-grid">
-    <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+    <form class="contact-form contact-form--float" action="{{ site.Params.formEndpoint }}" method="POST">
       <h2>Inquiry Form</h2>
       <input type="hidden" name="_subject" value="Request to Book (Coffee Camper)">
       {{ partial "form-meta.html" . }}
       <label>
         <span>Business name (if applicable)</span>
-        <input type="text" name="business_name" autocomplete="organization">
+        <input type="text" name="business_name" autocomplete="organization" placeholder=" ">
       </label>
       <label>
         <span>Contact name</span>
-        <input type="text" name="contact_name" autocomplete="name" required>
+        <input type="text" name="contact_name" autocomplete="name" placeholder=" " required>
       </label>
       <label>
         <span>Email</span>
-        <input type="email" name="email" autocomplete="email" required>
+        <input type="email" name="email" autocomplete="email" placeholder=" " required>
       </label>
       <label>
         <span>Phone number</span>
-        <input type="tel" name="phone" autocomplete="tel" required>
+        <input type="tel" name="phone" autocomplete="tel" placeholder=" " required>
       </label>
       <label>
         <span>Event address</span>
-        <input type="text" name="event_address" required>
+        <input type="text" name="event_address" placeholder=" " required>
         <small>Street number, street name, city, state, ZIP</small>
       </label>
       <label>
         <span>Date of event</span>
-        <input type="date" name="event_date" required data-min-today>
+        <input type="date" name="event_date" placeholder=" " required data-min-today>
       </label>
       <label>
         <span>Number of drinks</span>
-        <input type="number" name="number_of_drinks" min="1" required>
+        <input type="number" name="number_of_drinks" min="1" placeholder=" " required>
         <small>Roughly how many drinks you expect to serve</small>
       </label>
       <fieldset>

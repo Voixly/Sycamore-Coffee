@@ -14,9 +14,13 @@
     RESEND_API_KEY  secret, sending permission is enough
     FORM_TO         recipient(s), comma separated
     FORM_FROM       sender, must be on a domain verified in Resend
+    FORM_TS_SECRET  Turnstile secret; when set, submissions without a
+                    valid token are dropped
+    FORM_TS_KEY     Turnstile sitekey (public). Served by GET /api/turnstile-key.
 */
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const SITEVERIFY_ENDPOINT = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const SUCCESS_PATH = "/thank-you/";
 const FAILURE_PATH = "/message-failed/";
 const DEFAULT_SUBJECT = "Sycamore Coffee Co website form";
@@ -56,7 +60,7 @@ const collect = (form) => {
   const fields = new Map();
 
   for (const [key, raw] of form.entries()) {
-    if (key.startsWith("_")) {
+    if (key.startsWith("_") || key === "cf-turnstile-response") {
       continue;
     }
 
@@ -88,6 +92,48 @@ const emailSubject = (form, fields) => {
   }
 
   return (preset || DEFAULT_SUBJECT).slice(0, 200);
+};
+
+const verifyTurnstile = async (request, env, token) => {
+  if (!env.FORM_TS_SECRET) {
+    return { ok: true };
+  }
+
+  if (!String(token || "").trim()) {
+    return { ok: false, why: "turnstile-missing" };
+  }
+
+  const body = new URLSearchParams({
+    secret: env.FORM_TS_SECRET,
+    response: String(token).trim(),
+  });
+  const ip = request.headers.get("CF-Connecting-IP");
+
+  if (ip) {
+    body.set("remoteip", ip);
+  }
+
+  let data;
+
+  try {
+    const res = await fetch(SITEVERIFY_ENDPOINT, {
+      method: "POST",
+      body,
+    });
+    data = await res.json();
+  } catch (err) {
+    console.error("form: turnstile verify failed", err);
+
+    return { ok: false, why: "turnstile-error" };
+  }
+
+  if (!data.success) {
+    console.error("form: turnstile rejected", data["error-codes"]);
+
+    return { ok: false, why: "turnstile" };
+  }
+
+  return { ok: true };
 };
 
 const buildText = (fields) => {
@@ -147,6 +193,16 @@ export async function onRequestPost({ request, env }) {
      retry, but send nothing. */
   if (String(form.get("_honey") || "").trim()) {
     return goTo(request, SUCCESS_PATH);
+  }
+
+  const challenge = await verifyTurnstile(
+    request,
+    env,
+    form.get("cf-turnstile-response")
+  );
+
+  if (!challenge.ok) {
+    return goTo(request, FAILURE_PATH, challenge.why);
   }
 
   const fields = collect(form);

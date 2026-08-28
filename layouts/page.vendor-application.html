@@ -28,29 +28,29 @@
 
 <section class="tint-band theme-blue">
 <section class="contact-grid">
-  <form class="contact-form" action="{{ site.Params.formEndpoint }}" method="POST">
+  <form class="contact-form contact-form--float" action="{{ site.Params.formEndpoint }}" method="POST">
     <h2>Vendor Application</h2>
     <input type="hidden" name="_subject" value="Vendor application">
     {{ partial "form-meta.html" . }}
     <label>
       <span>Business / vendor name</span>
-      <input type="text" name="vendor_name" autocomplete="organization" required>
+      <input type="text" name="vendor_name" autocomplete="organization" placeholder=" " required>
     </label>
     <label>
       <span>Contact name</span>
-      <input type="text" name="contact_name" autocomplete="name" required>
+      <input type="text" name="contact_name" autocomplete="name" placeholder=" " required>
     </label>
     <label>
       <span>Email</span>
-      <input type="email" name="email" autocomplete="email" required>
+      <input type="email" name="email" autocomplete="email" placeholder=" " required>
     </label>
     <label>
       <span>Phone</span>
-      <input type="tel" name="phone" autocomplete="tel" required>
+      <input type="tel" name="phone" autocomplete="tel" placeholder=" " required>
     </label>
     <label>
       <span>Website / social</span>
-      <input type="text" name="website_social" autocomplete="url">
+      <input type="text" name="website_social" autocomplete="url" placeholder=" ">
     </label>
     <label>
       <span>Which market are you interested in?</span>
@@ -92,16 +92,16 @@
     </label>
     <label>
       <span>Trailer dimensions</span>
-      <input type="text" name="trailer_size">
+      <input type="text" name="trailer_size" placeholder=" ">
       <small>Leave blank if you are not bringing a trailer or vehicle</small>
     </label>
     <label>
       <span>Describe your products</span>
-      <textarea name="products" rows="5" required></textarea>
+      <textarea name="products" rows="5" placeholder=" " required></textarea>
     </label>
     <label>
       <span>What type of permit do you operate under?</span>
-      <textarea name="permit" rows="3" required></textarea>
+      <textarea name="permit" rows="3" placeholder=" " required></textarea>
       <small>Write “None” if not applicable</small>
     </label>
     <label class="inline">
