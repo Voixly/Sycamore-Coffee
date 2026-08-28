@@ -46,8 +46,8 @@
   --navy-band: var(--blue-900);
   --footer-bg: var(--harvest-400);
   --footer-ink: var(--harvest-1000);
-  --btn: var(--coral-800);
-  --btn-hover: var(--coral-900);
+  --btn: var(--coral-900);
+  --btn-hover: var(--coral-1000);
   --btn-ink: var(--coral-1000);
   --ink: var(--blue-1000);
   --muted: var(--blue-900);
@@ -342,6 +342,15 @@ main:focus { outline: none; }
 .nav a:hover { color: var(--blue-700); }
 .header-actions { display: flex; align-items: center; gap: 0.75rem; }
 .header-cta { min-height: 40px; padding: 0.5rem 1.25rem; font-size: 0.82rem; }
+.header-cta,
+.nav-cta {
+  background: var(--blue-900);
+}
+.header-cta:hover,
+.nav-cta:hover {
+  background: var(--blue-1000);
+  color: var(--white);
+}
 .nav > .nav-cta,
 .nav-extras { display: none; }
 .nav a.btn {
@@ -861,11 +870,11 @@ main:has(.invite-band) + .site-footer,
   color: var(--harvest-1000);
 }
 .page-contact .contact-form .btn-primary {
-  background: var(--harvest-800);
+  background: var(--harvest-900);
   color: var(--white);
 }
 .page-contact .contact-form .btn-primary:hover {
-  background: var(--harvest-900);
+  background: var(--harvest-1000);
   color: var(--white);
 }
 .page-contact .contact-form--float > label span {
@@ -894,11 +903,11 @@ main:has(.invite-band) + .site-footer,
 .tint-band.theme-coral .eyebrow { color: var(--coral-900); }
 .tint-band.theme-coral p { color: var(--coral-900); }
 .tint-band.theme-coral .btn-primary {
-  background: var(--coral-800);
+  background: var(--coral-900);
   color: var(--white);
 }
 .tint-band.theme-coral .btn-primary:hover {
-  background: var(--coral-900);
+  background: var(--coral-1000);
   color: var(--white);
 }
 .tint-band.theme-coral .polaroid {
@@ -913,7 +922,7 @@ main:has(.invite-band) + .site-footer,
 .tint-band.theme-blue .eyebrow { color: var(--blue-900); }
 .tint-band.theme-blue p { color: var(--blue-900); }
 .tint-band.theme-blue .btn-primary {
-  background: var(--blue-800);
+  background: var(--blue-900);
   color: var(--white);
 }
 .tint-band.theme-blue .btn-primary:hover {
@@ -1606,11 +1615,11 @@ main:has(.invite-band) + .site-footer,
   font-size: clamp(2rem, 4.2vw, 3.2rem);
   margin: 0 0 0.75rem;
 }
-.invite-meta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-  margin: 0 0 1.15rem;
+.invite-band .btn-primary {
+  background: var(--harvest-400);
+  color: var(--blue-900);
+}
+.invite-band .btn-primary:hover {
+  background: var(--harvest-500);
+  color: var(--blue-900);
 }

@@ -60,12 +60,14 @@
   {{ partial "photo.html" (dict "src" "photos/latte-art.jpg" "alt" "Latte art in a Sycamore cup" "ratio" "4/5" "n" 3 "sizes" $gallerySizes) }}
 </section>
 
+<section class="tint-band theme-blue">
 <section class="socials">
   <div class="section-head">
     <p class="eyebrow">Testimonials</p>
     <h2>What our neighbors say</h2>
   </div>
   {{ partial "testimonials.html" . }}
+</section>
 </section>
 
 {{ partial "invite-band.html" . }}
