@@ -3,7 +3,6 @@
 
 <header class="menu-head">
   <h1>Menu</h1>
-  {{ with $menu.updated }}<p class="menu-updated">Updated {{ .Format "January 2, 2006" }}</p>{{ end }}
 </header>
 
 <nav class="menu-jump" aria-label="Menu sections">
@@ -36,6 +35,7 @@
         </li>
       {{ end }}
     </ul>
+    <p class="item-desc sub-note">Available in-store only — sign up at the counter.</p>
   </section>
   {{ end }}
 
@@ -138,4 +138,10 @@
     {{ end }}
   </section>
 </div>
+
+{{ with $menu.updated }}
+  <p class="menu-updated">Updated <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "January 2, 2006" }}</time></p>
+{{ end }}
+
+{{ partial "invite-band.html" . }}
 {{ end }}

@@ -9,7 +9,7 @@
     "src" "photos/interior.jpg"
     "alt" "The seating area inside Sycamore Coffee Co"
     "ratio" "4/5" "n" 3 "eager" true
-    "sizes" "(max-width: 900px) 70vw, 272px") }}
+    "sizes" "(max-width: 900px) 92vw, 28vw") }}
 </section>
 
 {{ $addr := site.Params.address }}
@@ -32,6 +32,10 @@
       {{ range site.Params.hours }}
         <p>{{ .label }}: {{ .value }}</p>
       {{ end }}
+    </article>
+    <article>
+      <h2>Follow our shop</h2>
+      {{ partial "social-links.html" "ink" }}
     </article>
   </div>
 
@@ -67,4 +71,6 @@
     referrerpolicy="no-referrer-when-downgrade"
     allowfullscreen></iframe>
 </div>
+
+{{ partial "invite-band.html" . }}
 {{ end }}

@@ -4,6 +4,9 @@
   <h1>A few words about us</h1>
   <p class="hero-sub">Sycamore Coffee Co.</p>
   <p class="lede">At Sycamore Coffee Co., we believe that great coffee is more than just a beverage; it's a catalyst for connection.</p>
+  <p class="about-cta about-cta-mobile">
+    <a class="btn btn-primary" href="{{ site.Params.address.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
+  </p>
 </section>
 
 <section class="about-split">
@@ -18,6 +21,9 @@
     <p>In 2017, Aaron Menke found himself working at a coffee shop in Tomball, Texas. During one of his breaks, he sat beneath a sycamore tree and struggled to make sense of the trials of life. He decided to open his Bible and began reading the book of James. In that moment, he was reminded that God uses life’s trials for good—shaping and preparing us for His purpose. That promise stayed with him.</p>
     <p>In 2022, Aaron stepped back into the coffee world, taking a management position at Hebrews Coffee. Though uncertain at first why God had led him back, he soon realized the answer. Through that role, he found the kind of community he had long been praying for.</p>
     <p>Two years later, in 2024, Hebrews Coffee closed its doors—but not for long. Aaron asked his former employer if he could purchase the equipment and continue the shop as his own. One week after Hebrews closed, he reopened it as Sycamore Coffee with the support of beloved friends and the community.</p>
+    <p class="about-cta about-cta-desktop">
+      <a class="btn btn-primary" href="{{ site.Params.address.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
+    </p>
   </div>
 </section>
 
@@ -61,4 +67,6 @@
   </div>
   {{ partial "testimonials.html" . }}
 </section>
+
+{{ partial "invite-band.html" . }}
 {{ end }}

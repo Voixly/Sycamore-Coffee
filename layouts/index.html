@@ -16,7 +16,7 @@
       </article>
       <article class="cream-card hours-card">
         <div>
-          <h2>Shop Hours</h2>
+          <h2 class="hours-heading">Shop Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
           <p class="hours-inline">
             {{ range $i, $day := site.Params.hours }}
               {{ if $i }}<span aria-hidden="true">·</span>{{ end }}
@@ -28,17 +28,17 @@
           <h2>Shop Location</h2>
           <p><a href="{{ $addr.maps }}" target="_blank" rel="noopener">{{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}</a></p>
         </div>
-        <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener">Visit Sycamore</a>
+        <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
       </article>
     </div>
   </div>
 
   <div class="home-wrap photo-row">
     {{ $rowSizes := "(max-width: 640px) 94vw, (max-width: 980px) 46vw, 24vw" }}
-    {{ partial "photo.html" (dict "src" "photos/latte-art.jpg" "alt" "A barista serving a seasonal coffee flight" "ratio" "3/4" "n" 2 "sizes" $rowSizes) }}
-    {{ partial "photo.html" (dict "src" "photos/sycamore-20.webp" "alt" "Iced lattes lined up on the bar" "ratio" "3/4" "n" 3 "sizes" $rowSizes) }}
-    {{ partial "photo.html" (dict "src" "photos/interior.jpg" "alt" "The seating area inside Sycamore Coffee Co" "ratio" "3/4" "n" 4 "sizes" $rowSizes) }}
-    {{ partial "photo.html" (dict "src" "photos/sycamore-19.webp" "alt" "The Sycamore Coffee Co team behind the counter" "ratio" "3/4" "n" 5 "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/latte-art.jpg" "alt" "A barista serving a seasonal coffee flight" "ratio" "3/4" "n" 2 "eager" true "priority" "low" "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/sycamore-20.webp" "alt" "Iced lattes lined up on the bar" "ratio" "3/4" "n" 3 "eager" true "priority" "low" "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/interior.jpg" "alt" "The seating area inside Sycamore Coffee Co" "ratio" "3/4" "n" 4 "eager" true "priority" "low" "sizes" $rowSizes) }}
+    {{ partial "photo.html" (dict "src" "photos/sycamore-19.webp" "alt" "The Sycamore Coffee Co team behind the counter" "ratio" "3/4" "n" 5 "eager" true "priority" "low" "sizes" $rowSizes) }}
   </div>
 </section>
 
@@ -55,6 +55,7 @@
       <p>Sycamore Coffee officially began in 2024. In 2017, Aaron Menke found himself working at a coffee shop in Tomball, Texas. During one of his breaks, he sat beneath a sycamore tree and struggled to make sense of the trials of life. He decided to open his Bible and began reading the book of James. In that moment, he was reminded that God uses life’s trials for good—shaping and preparing us for His purpose. That promise stayed with him.</p>
       <p>In 2022, Aaron stepped back into the coffee world, taking a management position at Hebrews Coffee. Though uncertain at first why God had led him back, he soon realized the answer. Through that role, he found the kind of community he had long been praying for.</p>
       <p>Two years later, in 2024, Hebrews Coffee closed its doors—but not for long. Aaron asked his former employer if he could purchase the equipment and continue the shop as his own. One week after Hebrews closed, he reopened it as Sycamore Coffee with the support of beloved friends and the community.</p>
+      <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
     </div>
   </div>
 </section>
@@ -69,10 +70,10 @@
         (dict "src" "photos/the-sycamore.jpg" "alt" "The Sycamore latte" "title" "The Sycamore Latte" "cta" "Explore the Favorites" "url" "/menu/#favorites")
         (dict "src" "photos/baked.jpg" "alt" "Brunch plates at Sycamore" "title" "Full Brunch Menu" "cta" "Explore the Full Menu" "url" "/menu/")
         (dict "src" "photos/flights.jpg" "alt" "Freshly baked goods on the counter" "title" "Freshly Baked Eats" "cta" "Explore Freshly Baked Eats" "url" "/menu/#food") }}
-        {{ $caption := printf `<h3>%s</h3><a class="text-link" href="%s">%s</a>` $tile.title ($tile.url | relURL) $tile.cta | safeHTML }}
+        {{ $caption := printf `<h3>%s</h3><a class="text-link stretched-link" href="%s">%s</a>` $tile.title ($tile.url | relURL) $tile.cta | safeHTML }}
         {{ partial "photo.html" (dict
           "src" $tile.src "alt" $tile.alt "ratio" "1/1"
-          "n" (add $i 1) "sizes" $tileSizes "caption" $caption) }}
+          "n" (add $i 1) "sizes" $tileSizes "caption" $caption "class" "fav-card") }}
       {{ end }}
     </div>
   </div>
@@ -94,15 +95,15 @@
         <h3>Local Engagement</h3>
         <p>We’re a hub for local talent, hosting everything from open mic nights to community book clubs.</p>
       </article>
-      {{ with $menu.happyHour }}
-        {{ $deal := index .items 0 }}
-        <article>
-          <h3>{{ .name }}</h3>
-          <p>{{ $deal.name }}{{ with $deal.desc }}, {{ . }}{{ end }}. Pull up a chair and stay awhile.</p>
-          <p><a class="text-link" href="{{ "/menu/#happy-hour" | relURL }}">See the menu</a></p>
-        </article>
-      {{ end }}
     </div>
+    {{ with $menu.happyHour }}
+      {{ $deal := index .items 0 }}
+      <aside class="hh-band">
+        <h3>{{ .name }}</h3>
+        <p>{{ $deal.name }}{{ with $deal.desc }}, {{ . }}{{ end }}. Pull up a chair and stay awhile.</p>
+        <p><a class="text-link" href="{{ "/menu/#happy-hour" | relURL }}">See the menu</a></p>
+      </aside>
+    {{ end }}
   </div>
 </section>
 
@@ -150,4 +151,6 @@
     {{ partial "testimonials.html" . }}
   </div>
 </section>
+
+{{ partial "invite-band.html" . }}
 {{ end }}

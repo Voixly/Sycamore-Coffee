@@ -1,0 +1,11 @@
+{{ $addr := site.Params.address }}
+<section class="invite-band" data-invite-band aria-labelledby="invite-title">
+  <div class="invite-inner">
+    <h2 id="invite-title">See you on Magnolia Circle.</h2>
+    <p class="invite-meta">
+      <span class="hours-badge" data-hours-badge hidden></span>
+      <span data-hours-today></span>
+    </p>
+    <a class="btn btn-primary" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
+  </div>
+</section>

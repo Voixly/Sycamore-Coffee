@@ -5,18 +5,12 @@
       <h2>Contact Us</h2>
       <p><a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a></p>
       <p><a href="{{ site.Params.phoneHref | safeURL }}">{{ site.Params.phone }}</a></p>
-      <p>
-        <a href="{{ site.Params.social.facebook }}" target="_blank" rel="noopener">Facebook</a>
-        <span aria-hidden="true">·</span>
-        <a href="{{ site.Params.social.instagram }}" target="_blank" rel="noopener">Instagram</a>
-      </p>
+      {{ partial "social-links.html" "ink" }}
     </div>
 
     <div>
       <h2 class="hours-heading">Shop Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
-      {{ range site.Params.hours }}
-        <p class="hours-row"><span>{{ .label }}</span> <span>{{ .value }}</span></p>
-      {{ end }}
+      {{ partial "hours-list.html" . }}
     </div>
 
     <div>

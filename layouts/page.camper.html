@@ -21,8 +21,8 @@
       <input type="hidden" name="_subject" value="Request to Book (Coffee Camper)">
       {{ partial "form-meta.html" . }}
       <label>
-        <span>Business name</span>
-        <input type="text" name="business_name" autocomplete="organization" required>
+        <span>Business name (if applicable)</span>
+        <input type="text" name="business_name" autocomplete="organization">
       </label>
       <label>
         <span>Contact name</span>
@@ -43,7 +43,7 @@
       </label>
       <label>
         <span>Date of event</span>
-        <input type="date" name="event_date" required>
+        <input type="date" name="event_date" required data-min-today>
       </label>
       <label>
         <span>Number of drinks</span>
@@ -62,8 +62,10 @@
       <p class="eyebrow">Catering options</p>
       <h2>Camper Menu</h2>
       {{ $sizes := "(max-width: 900px) 94vw, 46vw" }}
-      {{ partial "photo.html" (dict "src" "photos/camper-menu.jpg" "alt" "The Coffee Camper drinks menu board" "ratio" "3/4" "n" 1 "sizes" $sizes) }}
-      {{ partial "photo.html" (dict "src" "photos/camper.jpg" "alt" "The Coffee Camper parked at an outdoor event" "ratio" "3/2" "n" 2 "class" "stacked" "sizes" $sizes) }}
+      <div class="photo-stack">
+        {{ partial "photo.html" (dict "src" "photos/camper-menu.jpg" "alt" "The Coffee Camper drinks menu board" "ratio" "3/4" "n" 1 "sizes" $sizes) }}
+        {{ partial "photo.html" (dict "src" "photos/camper.jpg" "alt" "The Coffee Camper parked at an outdoor event" "ratio" "3/2" "n" 2 "sizes" $sizes) }}
+      </div>
     </div>
   </div>
 </section>

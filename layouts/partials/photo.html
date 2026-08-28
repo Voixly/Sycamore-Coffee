@@ -45,7 +45,8 @@
 {{ end }}
 
 {{ $rot := cond (eq (mod (int (default 1 .n)) 2) 1) "rot-2" "rot-n2" }}
-<figure class="polaroid {{ $rot }}{{ if .eager }} is-hero{{ end }}{{ if .caption }} has-caption{{ end }}{{ with .class }} {{ . }}{{ end }}">
+{{ $lcp := and .eager (ne .priority "low") }}
+<figure class="polaroid {{ $rot }}{{ if $lcp }} is-hero{{ end }}{{ if .caption }} has-caption{{ end }}{{ with .class }} {{ . }}{{ end }}">
   {{/* LCP/eager: one src, no srcset. The preload scanner fetches src; a
        srcset candidate can be a different URL than the head preload. */}}
   <img
@@ -58,9 +59,9 @@
     height="{{ $fallback.Height }}"
     alt="{{ .alt }}"
     {{ if .eager }}
-    fetchpriority="high"
+    fetchpriority="{{ default "high" .priority }}"
     loading="eager"
-    decoding="sync"
+    decoding="async"
     {{ else }}
     loading="lazy"
     decoding="async"

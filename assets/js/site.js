@@ -12,14 +12,13 @@
       nav.classList.toggle("open", open);
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("nav-open", open);
     };
 
     toggle.addEventListener("click", () => {
       setOpen(!nav.classList.contains("open"));
     });
 
-    // Most nav targets are same-page anchors, which leave the panel covering
-    // the content unless we close it ourselves.
     nav.addEventListener("click", (event) => {
       if (event.target.closest("a")) {
         setOpen(false);
@@ -33,7 +32,16 @@
       }
     });
 
-    // Leaving the mobile breakpoint must not strand the panel open.
+    document.addEventListener("pointerdown", (event) => {
+      if (!nav.classList.contains("open")) {
+        return;
+      }
+      if (nav.contains(event.target) || toggle.contains(event.target)) {
+        return;
+      }
+      setOpen(false);
+    });
+
     const desktop = window.matchMedia("(min-width: 901px)");
     desktop.addEventListener("change", (event) => {
       if (event.matches) {
@@ -42,14 +50,9 @@
     });
   };
 
-  // The Elfsight bundle is heavy third-party JS, so it stays off the critical
-  // path. Whichever trigger fires first wins: the section nearing the
-  // viewport, the first scroll, or the browser going idle after load. The
-  // belt-and-braces triggers matter because an embed that never appears is a
-  // worse failure than one that loads a moment early.
   const initSocialEmbed = () => {
-    const host = document.querySelector("[data-elfsight-embed]");
-    if (!host) {
+    const hosts = document.querySelectorAll("[data-elfsight-embed]");
+    if (!hosts.length) {
       return;
     }
 
@@ -60,10 +63,16 @@
       }
       loaded = true;
 
-      host.insertAdjacentHTML(
-        "afterbegin",
-        `<div class="elfsight-app-${host.dataset.elfsightEmbed}" data-elfsight-app-lazy></div>`
-      );
+      for (const host of hosts) {
+        const id = host.dataset.elfsightEmbed;
+        if (!id || host.querySelector(`[class^="elfsight-app-"]`)) {
+          continue;
+        }
+        host.insertAdjacentHTML(
+          "afterbegin",
+          `<div class="elfsight-app-${id}" data-elfsight-app-lazy></div>`
+        );
+      }
 
       const script = document.createElement("script");
       script.src = "https://elfsightcdn.com/platform.js";
@@ -82,7 +91,9 @@
         },
         { rootMargin: "600px" }
       );
-      observer.observe(host);
+      for (const host of hosts) {
+        observer.observe(host);
+      }
     }
 
     addEventListener("scroll", load, { once: true, passive: true });
@@ -102,9 +113,6 @@
     addEventListener("load", idle, { once: true });
   };
 
-  // Preselects the catering inquiry form's service from whichever option's
-  // button was clicked. The select is the source of truth, so with JS off the
-  // form still submits a valid choice.
   const initCateringPicker = () => {
     const select = document.querySelector("[data-catering-select]");
     if (!select) {
@@ -118,9 +126,6 @@
     }
   };
 
-  // Polaroids rest at --tilt. JS adds is-waiting so they start lower and more
-  // rotated, then is-in settles them. Without JS, or with reduced motion, they
-  // render in the rest pose from the first paint.
   const initPolaroids = () => {
     if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
       return;
@@ -151,8 +156,6 @@
     const desktop = window.matchMedia("(min-width: 981px)").matches;
     const grouped = new Set();
 
-    /* One trigger for the four-up row so the CSS delays run as a wave
-       instead of each frame racing the observer on its own. */
     if (desktop) {
       for (const row of document.querySelectorAll(".photo-row")) {
         const kids = [...row.querySelectorAll(".polaroid")];
@@ -194,11 +197,71 @@
     }
   };
 
+  const chicagoDate = () =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Chicago",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+
+  const initDateMins = () => {
+    const today = chicagoDate();
+    for (const input of document.querySelectorAll("[data-min-today]")) {
+      input.min = today;
+    }
+  };
+
+  const initHashScroll = () => {
+    const scrollToId = (id) => {
+      if (!id) {
+        return;
+      }
+      const el = document.getElementById(id);
+      if (!el) {
+        return;
+      }
+      el.scrollIntoView();
+    };
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link) {
+        return;
+      }
+      const url = new URL(link.href, location.href);
+      if (url.origin !== location.origin || url.pathname !== location.pathname) {
+        return;
+      }
+      if (!url.hash || url.hash === "#") {
+        return;
+      }
+      const id = decodeURIComponent(url.hash.slice(1));
+      if (!document.getElementById(id)) {
+        return;
+      }
+      event.preventDefault();
+      history.pushState(null, "", url.hash);
+      scrollToId(id);
+    });
+
+    const jump = () => {
+      scrollToId(decodeURIComponent(location.hash.slice(1)));
+    };
+
+    jump();
+    addEventListener("hashchange", jump);
+    addEventListener("load", jump);
+  };
+
   const initHoursDialog = () => {
-    const trigger = document.querySelector("[data-hours-open]");
     const dialog = document.getElementById("hours-dialog");
+    if (!dialog) {
+      return;
+    }
+
     const dataEl = dialog.getAttribute("data-hours");
-    if (!trigger || !dialog || !dataEl) {
+    if (!dataEl) {
       return;
     }
 
@@ -284,13 +347,6 @@
       return `Sorry we missed you. We’ll be serving coffee again ${next.day} at ${formatOpen(next.opens)}.`;
     };
 
-    const BADGE = {
-      open: "Open",
-      soon: "Closing Soon",
-      opening: "Opening Soon",
-      closed: "Closed Today",
-    };
-
     const snapshot = () => {
       const now = minutesNow();
       const row = (data.days || []).find((item) => item.day === now.day);
@@ -300,33 +356,36 @@
       let state = "closed";
       let title = "We Are Closed";
       let sub = closedLine(now.day, now.minutes);
+      let badge = "Closed Today";
+      let todayLine = "Closed";
 
       if (opens !== null && closes !== null) {
         const openAt = formatOpen(row.opens);
         const closeAt = formatOpen(row.closes);
+        todayLine = `${openAt} – ${closeAt}`;
+        badge = "Closed Now";
+
         if (now.minutes >= opens && now.minutes < closes) {
           if (closes - now.minutes <= windowMin) {
             state = "soon";
             title = "Closing Soon";
             sub = `We’re serving coffee until ${closeAt} today.`;
+            badge = "Closing Soon";
           } else {
             state = "open";
             title = "We Are Open";
             sub = `We’re serving coffee from ${openAt} – ${closeAt} today.`;
+            badge = "Open";
           }
         } else if (now.minutes < opens && opens - now.minutes <= windowMin) {
           state = "opening";
           title = "Opening Soon";
           sub = `We’ll open at ${openAt}.`;
+          badge = "Opening Soon";
         }
       }
 
-      return {
-        state,
-        title,
-        sub,
-        badge: BADGE[state] || BADGE.closed,
-      };
+      return { state, title, sub, badge, todayLine };
     };
 
     const paintBadges = (snap) => {
@@ -334,6 +393,9 @@
         el.hidden = false;
         el.dataset.state = snap.state;
         el.textContent = snap.badge;
+      }
+      for (const el of document.querySelectorAll("[data-hours-today]")) {
+        el.textContent = snap.todayLine;
       }
     };
 
@@ -352,11 +414,19 @@
 
     paint();
 
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      paint();
-      dialog.showModal();
-    });
+    let lastTrigger = null;
+    for (const trigger of document.querySelectorAll("[data-hours-open]")) {
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault();
+        lastTrigger = trigger;
+        paint();
+        const y = window.scrollY;
+        dialog.showModal();
+        if (window.scrollY !== y) {
+          window.scrollTo({ top: y, behavior: "instant" });
+        }
+      });
+    }
 
     closeBtn.addEventListener("click", () => {
       dialog.close();
@@ -367,6 +437,75 @@
         dialog.close();
       }
     });
+
+    dialog.addEventListener("close", () => {
+      if (lastTrigger) {
+        lastTrigger.focus({ preventScroll: true });
+      }
+    });
+  };
+
+  const initForms = () => {
+    for (const form of document.querySelectorAll(".contact-form")) {
+      const status = form.querySelector("[data-form-status]");
+      const submit = form.querySelector('[type="submit"]');
+      if (!status || !submit) {
+        continue;
+      }
+
+      const idleLabel = submit.textContent;
+
+      const setStatus = (kind, message) => {
+        status.hidden = false;
+        status.textContent = message;
+        if (kind === "error") {
+          status.setAttribute("role", "alert");
+          status.removeAttribute("aria-live");
+          return;
+        }
+        status.removeAttribute("role");
+        status.setAttribute("aria-live", "polite");
+      };
+
+      form.addEventListener("submit", async (event) => {
+        if (!window.fetch) {
+          return;
+        }
+
+        event.preventDefault();
+        submit.disabled = true;
+        submit.textContent = "Sending…";
+        setStatus("pending", "Sending your message.");
+
+        try {
+          const res = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            redirect: "follow",
+          });
+
+          const url = res.url || "";
+          if (url.includes("/thank-you/")) {
+            setStatus("success", "Thanks — we got it and will be in touch.");
+            form.reset();
+            return;
+          }
+
+          setStatus(
+            "error",
+            "Something went wrong and your message was not sent. Please email or call us."
+          );
+        } catch {
+          setStatus(
+            "error",
+            "Something went wrong and your message was not sent. Please email or call us."
+          );
+        } finally {
+          submit.disabled = false;
+          submit.textContent = idleLabel;
+        }
+      });
+    }
   };
 
   initNav();
@@ -374,4 +513,7 @@
   initCateringPicker();
   initPolaroids();
   initSocialEmbed();
+  initDateMins();
+  initHashScroll();
+  initForms();
 })();

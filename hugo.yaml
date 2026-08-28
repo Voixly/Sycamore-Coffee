@@ -53,6 +53,7 @@ params:
     instagram: https://www.instagram.com/sycamorecoffeeco/
     facebook: https://www.facebook.com/p/Sycamore-Coffee-Co-61561258343006/
     elfsight: 677beb74-710d-4fe0-861b-503569ccd3d2
+    elfsightReviews: 4df7a1c9-5e11-4e53-944b-0bb9019ada18
   typekit: https://use.typekit.net/jhz5dtz.css
   # WOFF2 files from that kit. Republish may change these; optional fonts
   # only apply if they finish before first paint, so they get preloaded.

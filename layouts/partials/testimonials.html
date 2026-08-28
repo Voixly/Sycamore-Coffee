@@ -4,16 +4,17 @@
 {{ end }}
 {{ if not $quotes }}{{ $quotes = site.Data.testimonials }}{{ end }}
 
-<div class="quote-grid">
-  {{ range $quotes }}
-    <blockquote>
-      <p>{{ .quote }}</p>
-      <footer>
-        {{ with resources.Get (printf "images/%s" .avatar) }}
-          <img src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async">
-        {{ end }}
-        <cite>{{ .name }}</cite>
-      </footer>
-    </blockquote>
-  {{ end }}
+<div class="reviews-embed" data-elfsight-embed="{{ site.Params.social.elfsightReviews }}">
+  <noscript>
+    <div class="quote-grid">
+      {{ range $quotes }}
+        <blockquote>
+          <p>{{ .quote }}</p>
+          <footer>
+            <cite>{{ .name }}</cite>
+          </footer>
+        </blockquote>
+      {{ end }}
+    </div>
+  </noscript>
 </div>

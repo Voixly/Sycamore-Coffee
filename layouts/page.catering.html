@@ -67,6 +67,7 @@
       <label>
         <span>What are you booking?</span>
         <select name="service" data-catering-select required>
+          <option value="" disabled selected>Choose one</option>
           {{ range $options }}
             <option value="{{ .book }}">{{ .title }}</option>
           {{ end }}

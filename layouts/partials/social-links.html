@@ -1,0 +1,11 @@
+{{ $tone := default "ink" . }}
+{{ $fb := cond (eq $tone "cream") "images/brand/icon-facebook-cream.png" "images/brand/icon-facebook.png" }}
+{{ $ig := cond (eq $tone "cream") "images/brand/icon-instagram-cream.png" "images/brand/icon-instagram.png" }}
+<nav class="social-links" aria-label="Social">
+  <a href="{{ site.Params.social.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+    <img src="{{ $fb | relURL }}" alt="" width="28" height="28">
+  </a>
+  <a href="{{ site.Params.social.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+    <img src="{{ $ig | relURL }}" alt="" width="28" height="28">
+  </a>
+</nav>

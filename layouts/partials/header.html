@@ -15,6 +15,7 @@
   "soonMinutes" 30
   "days" $hoursDays
 }}
+{{ $addr := site.Params.address }}
 
 <header class="site-header">
   <div class="header-inner">
@@ -23,13 +24,36 @@
     </a>
 
     <nav class="nav" id="site-nav" aria-label="Main">
+      <a class="btn btn-primary nav-cta" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
       {{ range site.Menus.main }}
         <a href="{{ .URL }}"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener"{{ end }}{{ if eq $.RelPermalink .URL }} aria-current="page"{{ end }}>{{ .Name }}</a>
       {{ end }}
+      <div class="nav-extras">
+        <a href="{{ "/coffee-camper/" | relURL }}">Book the Coffee Camper</a>
+        <p>
+          <a href="{{ $addr.maps }}" target="_blank" rel="noopener">
+            {{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}
+          </a>
+        </p>
+        <div>
+          <h2 class="hours-heading">Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
+          {{ partial "hours-list.html" . }}
+        </div>
+        <p>
+          <a href="{{ site.Params.phoneHref | safeURL }}">{{ site.Params.phone }}</a>
+        </p>
+        <p>
+          <a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a>
+        </p>
+        <div class="nav-social">
+          <h2>Follow our shop!</h2>
+          {{ partial "social-links.html" "cream" }}
+        </div>
+      </div>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-primary header-cta" href="{{ site.Params.address.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
+      <a class="btn btn-primary header-cta" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
@@ -41,5 +65,8 @@
   <button type="button" class="hours-dialog-close" data-hours-close aria-label="Close">&times;</button>
   <p class="hours-status" id="hours-status"></p>
   <p class="hours-sub" id="hours-sub"></p>
-  <a class="btn btn-primary" href="{{ site.Params.address.maps }}" data-hours-maps target="_blank" rel="noopener">Get Directions</a>
+  <div class="hours-dialog-week">
+    {{ partial "hours-list.html" . }}
+  </div>
+  <a class="btn btn-primary" href="{{ $addr.maps }}" data-hours-maps target="_blank" rel="noopener">Get Directions</a>
 </dialog>
