@@ -1,0 +1,91 @@
+Main Category,Sub Category,Name,Small Price,Large Price,Menu Description,Sub Description
+Coffee,Hot Espresso,Americano,5.53,6.67,N/A,N/A
+Coffee,Hot Espresso,Breve,6.82,7.76,N/A,N/A
+Coffee,Hot Espresso,Cappuccino,5.73,6.76,N/A,N/A
+Coffee,Hot Espresso,Cortado,5.19,N/A,N/A,N/A
+Coffee,Hot Espresso,Flat White,5.73,6.67,N/A,N/A
+Coffee,Hot Espresso,Latte,5.73,6.67,N/A,N/A
+Coffee,Hot Espresso,Macchiato,5.73,6.67,N/A,N/A
+Coffee,Hot Espresso,Mocha,6.16,7.25,N/A,N/A
+Coffee,Drip Coffee,French Press,N/A,6.49,N/A,N/A
+Coffee,Drip Coffee,House Drip,3.27,3.82,N/A,N/A
+Coffee,Drip Coffee,Pour Over,6.49,N/A,N/A,N/A
+Coffee,Iced Espresso,Americano,5.80,6.94,N/A,N/A
+Coffee,Iced Espresso,Breve,7.04,8.15,N/A,N/A
+Coffee,Iced Espresso,Latte,5.95,7.06,N/A,N/A
+Coffee,Iced Espresso,Macchiato,5.95,7.06,N/A,N/A
+Coffee,Iced Espresso,Mocha,6.43,7.52,N/A,N/A
+Coffee,Cold Brew,Cold Brew & Cream,5.09,5.93,N/A,N/A
+Coffee,Cold Brew,Lavender Honey,6.18,7.02,N/A,N/A
+Coffee,Cold Brew,Salted Caramel,6.18,7.02,N/A,N/A
+Coffee,Hot Favorites,Caramel Cookie,6.45,7.29,"Caramel, Vanilla, Cinnamon, Milk, Espresso",N/A
+Coffee,Hot Favorites,Cinnamon Honey Latte,6.20,7.21,"Cinnamon, Honey, Espresso, Milk",N/A
+Coffee,Hot Favorites,Mexican Mocha,6.45,7.29,"Chocolate, Vanilla, Cinnamon, Milk, Espresso",N/A
+Coffee,Hot Favorites,The Sycamore,6.67,7.52,"Vanilla, Caramel, Chocolate, Extra Shot, Half and Half",N/A
+Coffee,Hot Favorites,Brown Butter Toffee,6.45,7.29,"Brown Butter Toffee Syrup, Espresso, Milk",N/A
+Coffee,Hot Favorites,Caramelized Banana,6.45,7.29,"Caramelized Banana Syrup, Espresso, Milk",N/A
+Coffee,Hot Favorites,Pumpkin Spice Latte,6.45,7.29,"Pumpkin Pie Sauce, Pumpkin Spice, Espresso, Milk",
+Coffee,Iced Favorites,Caramel Cookie,6.73,7.54,"Caramel, Vanilla, Cinnamon, Milk, Espresso",N/A
+Coffee,Iced Favorites,Cinnamon Honey Latte,6.45,7.40,"Cinnamon, Honey, Espresso, Milk",N/A
+Coffee,Iced Favorites,Mexican Mocha,6.73,7.54,"Chocolate, Vanilla, Cinnamon, Milk, Espresso",N/A
+Coffee,Iced Favorites,The Sycamore,6.96,7.80,"Vanilla, Caramel, Chocolate, Extra Shot, Half and Half",N/A
+Coffee,Iced Favorites,Brown Butter Toffee,6.73,7.54,"Brown Butter Toffee Syrup, Espresso, Milk",N/A
+Coffee,Iced Favorites,Caramelized Banana,6.73,7.54,"Caramelized Banana Syrup, Espresso, Milk",N/A
+Coffee,Iced Favorites,Pumpkin Spice Latte,6.73,7.54,"Pumpkin Pie Sauce, Pumpkin Spice, Espresso, Milk",
+Coffee,Iced Favorites,Strawberry Matcha,6.73,7.54,"Strawberry Syrup, Milk, Matcha, Strawberry Cold Foam",
+Coffee,Iced Favorites,Lavender Matcha,6.73,7.54,"Lavender Syrup, Milk, Matcha, Lavender Whip",
+Flight,Coffee Flight,Fall Flights,N/A,19.30,N/A,N/A
+Flight,Coffee Flight,White Chocolate Snickerdoodle,N/A,N/A,"White Chocolate, Caramel, Cinnamon, Espresso, Milk, Whip",N/A
+Flight,Coffee Flight,Pumpkin Cream Chai,N/A,N/A,"Chai, Pumpkin Spice, Espresso, Milk, Whip, Pumpkin Cold Foam",N/A
+Flight,Coffee Flight,Maple Butter,N/A,N/A,"Maple Butter, Espresso, Milk, Whip, Cinnamon",N/A
+Flight,Coffee Flight,Cinnamon Roll Latte,N/A,N/A,"Cinnamon Roll Syrup, Espresso, Milk, Cream Cheese Cold Foam",N/A
+Food,Baked Goods,Lavender Scone,N/A,6.55,N/A,N/A
+Food,Baked Goods,Classic Cinnamon Roll,N/A,7.99,N/A,N/A
+Food,Baked Goods,Blueberry Muffin,N/A,5.99,N/A,N/A
+Food,Baked Goods,Gluten-Free Blueberry Muffin,N/A,6.99,N/A,N/A
+Food,Baked Goods,Chocolate Chip Cookie,N/A,4.99,N/A,N/A
+Food,Baked Goods,Peanut Butter Cup Cookie,N/A,5.99,N/A,N/A
+Food,Eats,Avocado Toast,N/A,10.46,"Avocado, Bacon, Feta Cheese, Everything Seasoning",N/A
+Food,Eats,Monte Cristo,N/A,10.86,"Ham, Swiss Cheese, Cream Cheese, Buttered Croissant, Jam",N/A
+Food,Eats,Sycamore Breakfast Sandwich,N/A,10.47,"Sausage, Bacon, Egg, Cheddar, Avocado, Croissant",N/A
+Food,Eats,Breakfast Sandwich,N/A,8.35,"Egg, Cheddar, Sausage or Bacon, Bagel or Croissant",N/A
+Food,Eats,Steak and Egg Quesadilla,N/A,13.09,"Steak, Eggs, Monterey Cheese, Chimichurri",N/A
+Food,Eats,Steak Keto Bowl,N/A,13.09,"Steak, 3 Eggs, Monterey Cheese",
+Food,Eats,Chipotle Steak Sandwich,N/A,14.49,"Steak, Monterey Cheese, Avocado, Croissant, Chipotle Sauce",N/A
+Food,Eats,Quiche Lorraine,N/A,9.28,"Bacon, Egg, Cheese, Spinach",N/A
+Food,Eats,Bacon Wrapped Egg Bites,N/A,6.56,"Egg, Bacon, Cheese, Croissant",N/A
+Food,Eats,Bagel,N/A,4.46,Add Cream Cheese $1.00,N/A
+Food,Eats,Kids' Pancake Breakfast,N/A,7.63,"2 Pancakes, 1 Egg, Sausage or Bacon, Organic Maple Syrup, Coloring Bag - Pancake Flavors: Classic, Chocolate Chip and Blueberry",N/A
+Kids,Kids Snack Pack,Camper Pack,N/A,7.65,"Fig Cookie Pack (GF Available), Salami, Cheese, Carrots, Hummus or Ranch, Kids Drink",N/A
+Kids,Kids Snack Pack,Trail Pack,N/A,4.95,"Uncrustable, Gummies, Munchies Snack Mix",N/A
+Other Drinks,Lemonade,Lavender Berry Lemonade,5.77,6.56,N/A,N/A
+Other Drinks,Lemonade,Lemonade,5.46,6.27,N/A,N/A
+Other Drinks,Lemonade,Sunrise Lemonade,5.77,6.56,"Hibiscus Tea, Lemonade, Honey",N/A
+Other Drinks,Iced Tea,Black Tea,4.57,5.51,N/A,N/A
+Other Drinks,Iced Tea,Hibiscus Cooler,4.57,5.51,N/A,N/A
+Other Drinks,Iced Tea Latte,Chai Latte,6.56,7.06,N/A,N/A
+Other Drinks,Iced Tea Latte,Dirty Chai,7.08,7.67,N/A,N/A
+Other Drinks,Iced Tea Latte,Matcha Latte,6.73,7.67,N/A,N/A
+Other Drinks,Smoothie,Chocolate Protein,6.73,7.58,N/A,N/A
+Other Drinks,Smoothie,Vanilla Protein,6.73,7.58,N/A,N/A
+Other Drinks,Frappe,Caramel Blendy,6.39,7.02,N/A,N/A
+Other Drinks,Frappe,Chocolate Blendy,6.39,7.02,N/A,N/A
+Other Drinks,Frappe,Vanilla Blendy,6.39,7.02,N/A,N/A
+Other Drinks,Hot Tea,Black Tea,4.35,4.92,N/A,N/A
+Other Drinks,Hot Tea,Chamomile Rose,4.80,5.27,N/A,N/A
+Other Drinks,Hot Tea,Earl Grey Crème,4.67,5.12,N/A,N/A
+Other Drinks,Hot Tea,Ginger Spice Chai,4.67,5.12,N/A,N/A
+Other Drinks,Hot Tea,Jade Green,4.67,5.12,N/A,N/A
+Other Drinks,Hot Tea Latte,Chai Latte,5.65,6.49,N/A,N/A
+Other Drinks,Hot Tea Latte,Dirty Chai,6.22,7.19,N/A,N/A
+Other Drinks,Hot Tea Latte,London Fog,4.98,5.51,N/A,N/A
+Other Drinks,Hot Tea Latte,Matcha Latte,6.22,7.19,N/A,N/A
+Flight,Matcha Flight,Fall Flight,N/A,19.30,N/A,N/A
+Flight,Matcha Flight,Pumpkin Matcha,N/A,N/A,"Pumpkin Sauce, Milk, Matcha, Pumpkin Cold Foam",N/A
+Flight,Matcha Flight,Salted Maple Matcha,N/A,N/A,"Maple, Milk, Matcha, Salted Maple Whip, Cinnamon",N/A
+Flight,Matcha Flight,Strawberry Matcha,N/A,N/A,"Strawberry Syrup, Milk, Matcha, Strawberry Cold Foam, Dried Strawberry",N/A
+Flight,Matcha Flight,Lavender Matcha,N/A,N/A,"Lavender Syrup, Milk, Matcha, Lavender Whip",N/A
+Promotions,Coffee Subscription,Syc. Drip,N/A,45 / month,Unlimited Drip Coffee Every Day,N/A
+Promotions,Coffee Subscription,Syc. Espresso,N/A,55 / month,Unlimited Drip Coffee & One Espresso or Cold Brew Drink Every Day,N/A
+Promotions,Coffee Subscription,Syc. Deal,N/A,65 / month,Unlimited Drip Coffee & Any One Drink Every Day,"Including Protein Smoothies, Lemonades, Espressos, Cold Brews, Teas, or Blended Drinks."
+Promotions,Happy Hour,50% Off Coffee,N/A,N/A,Weekdays 2pm - 3pm,N/A
