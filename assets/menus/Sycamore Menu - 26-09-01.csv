@@ -34,11 +34,11 @@ Coffee,Iced Favorites,Caramelized Banana,6.73,7.54,"Caramelized Banana Syrup, Es
 Coffee,Iced Favorites,Pumpkin Spice Latte,6.73,7.54,"Pumpkin Pie Sauce, Pumpkin Spice, Espresso, Milk",
 Coffee,Iced Favorites,Strawberry Matcha,6.73,7.54,"Strawberry Syrup, Milk, Matcha, Strawberry Cold Foam",
 Coffee,Iced Favorites,Lavender Matcha,6.73,7.54,"Lavender Syrup, Milk, Matcha, Lavender Whip",
-Flight,Coffee Flight,Fall Flights,N/A,19.30,N/A,N/A
-Flight,Coffee Flight,White Chocolate Snickerdoodle,N/A,N/A,"White Chocolate, Caramel, Cinnamon, Espresso, Milk, Whip",N/A
-Flight,Coffee Flight,Pumpkin Cream Chai,N/A,N/A,"Chai, Pumpkin Spice, Espresso, Milk, Whip, Pumpkin Cold Foam",N/A
-Flight,Coffee Flight,Maple Butter,N/A,N/A,"Maple Butter, Espresso, Milk, Whip, Cinnamon",N/A
-Flight,Coffee Flight,Cinnamon Roll Latte,N/A,N/A,"Cinnamon Roll Syrup, Espresso, Milk, Cream Cheese Cold Foam",N/A
+Fall Flights,Coffee Flight,Fall Coffee Flight,N/A,19.30,N/A,N/A
+Fall Flights,Coffee Flight,White Chocolate Snickerdoodle,N/A,N/A,"White Chocolate, Caramel, Cinnamon, Espresso, Milk, Whip",N/A
+Fall Flights,Coffee Flight,Pumpkin Cream Chai,N/A,N/A,"Chai, Pumpkin Spice, Espresso, Milk, Whip, Pumpkin Cold Foam",N/A
+Fall Flights,Coffee Flight,Maple Butter,N/A,N/A,"Maple Butter, Espresso, Milk, Whip, Cinnamon",N/A
+Fall Flights,Coffee Flight,Cinnamon Roll Latte,N/A,N/A,"Cinnamon Roll Syrup, Espresso, Milk, Cream Cheese Cold Foam",N/A
 Food,Baked Goods,Lavender Scone,N/A,6.55,N/A,N/A
 Food,Baked Goods,Classic Cinnamon Roll,N/A,7.99,N/A,N/A
 Food,Baked Goods,Blueberry Muffin,N/A,5.99,N/A,N/A
@@ -80,11 +80,11 @@ Other Drinks,Hot Tea Latte,Chai Latte,5.65,6.49,N/A,N/A
 Other Drinks,Hot Tea Latte,Dirty Chai,6.22,7.19,N/A,N/A
 Other Drinks,Hot Tea Latte,London Fog,4.98,5.51,N/A,N/A
 Other Drinks,Hot Tea Latte,Matcha Latte,6.22,7.19,N/A,N/A
-Flight,Matcha Flight,Fall Flight,N/A,19.30,N/A,N/A
-Flight,Matcha Flight,Pumpkin Matcha,N/A,N/A,"Pumpkin Sauce, Milk, Matcha, Pumpkin Cold Foam",N/A
-Flight,Matcha Flight,Salted Maple Matcha,N/A,N/A,"Maple, Milk, Matcha, Salted Maple Whip, Cinnamon",N/A
-Flight,Matcha Flight,Strawberry Matcha,N/A,N/A,"Strawberry Syrup, Milk, Matcha, Strawberry Cold Foam, Dried Strawberry",N/A
-Flight,Matcha Flight,Lavender Matcha,N/A,N/A,"Lavender Syrup, Milk, Matcha, Lavender Whip",N/A
+Fall Flights,Matcha Flight,Fall Matcha Flight,N/A,19.30,N/A,N/A
+Fall Flights,Matcha Flight,Pumpkin Matcha,N/A,N/A,"Pumpkin Sauce, Milk, Matcha, Pumpkin Cold Foam",N/A
+Fall Flights,Matcha Flight,Salted Maple Matcha,N/A,N/A,"Maple, Milk, Matcha, Salted Maple Whip, Cinnamon",N/A
+Fall Flights,Matcha Flight,Strawberry Matcha,N/A,N/A,"Strawberry Syrup, Milk, Matcha, Strawberry Cold Foam, Dried Strawberry",N/A
+Fall Flights,Matcha Flight,Lavender Matcha,N/A,N/A,"Lavender Syrup, Milk, Matcha, Lavender Whip",N/A
 Promotions,Coffee Subscription,Syc. Drip,N/A,45 / month,Unlimited Drip Coffee Every Day,N/A
 Promotions,Coffee Subscription,Syc. Espresso,N/A,55 / month,Unlimited Drip Coffee & One Espresso or Cold Brew Drink Every Day,N/A
 Promotions,Coffee Subscription,Syc. Deal,N/A,65 / month,Unlimited Drip Coffee & Any One Drink Every Day,"Including Protein Smoothies, Lemonades, Espressos, Cold Brews, Teas, or Blended Drinks."

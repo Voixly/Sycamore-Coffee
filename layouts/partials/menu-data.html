@@ -64,7 +64,10 @@
   {{ range $list }}
     {{ if .small }}{{ $hasSmall = true }}{{ end }}
     {{ if .large }}{{ $hasLarge = true }}{{ end }}
-    {{ if eq .name $sub }}
+    {{ $flightPrice := and (or .small .large) (findRE `(?i)flight` .name) }}
+    {{ if $flightPrice }}
+      {{ if .large }}{{ $headerPrice = .large }}{{ else }}{{ $headerPrice = .small }}{{ end }}
+    {{ else if eq .name $sub }}
       {{ if and .small .large }}
         {{ $flavors = $flavors | append . }}
       {{ else }}
@@ -101,9 +104,12 @@
   {{ with index $catIndex (printf "Coffee|%s" .) }}{{ $coffeeRight = $coffeeRight | append . }}{{ end }}
 {{ end }}
 {{ $flights := slice }}
-{{ range slice "Matcha Flight" "Coffee Flight" }}
-  {{ with index $catIndex (printf "Flight|%s" .) }}{{ $flights = $flights | append . }}{{ end }}
+{{ range $key, $cat := $catIndex }}
+  {{ if or (findRE `(?i)flight` $cat.main) (findRE `(?i)flight` $cat.name) }}
+    {{ $flights = $flights | append $cat }}
+  {{ end }}
 {{ end }}
+{{ $flights = sort $flights "name" }}
 {{ $other := slice }}
 {{ range slice "Iced Tea" "Iced Tea Latte" "Frappe" "Smoothie" "Hot Tea" "Hot Tea Latte" "Lemonade" }}
   {{ with index $catIndex (printf "Other Drinks|%s" .) }}{{ $other = $other | append . }}{{ end }}
@@ -136,6 +142,9 @@
 {{ with resources.Get (printf "menus/%s.yaml" $bestDate) }}
   {{ $meta := .Content | transform.Unmarshal }}
   {{ with $meta.featuredTitle }}{{ $featuredTitle = . }}{{ end }}
+{{ end }}
+{{ with index $flights 0 }}
+  {{ with .main }}{{ $featuredTitle = . }}{{ end }}
 {{ end }}
 
 {{ return (dict
