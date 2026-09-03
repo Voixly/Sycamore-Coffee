@@ -44,6 +44,16 @@ const toLabel = (key) => {
 
 const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(value);
 
+const isUsPhone = (value) => {
+  let digits = String(value || "").replace(/\D/g, "");
+
+  if (digits.length === 11 && digits.startsWith("1")) {
+    digits = digits.slice(1);
+  }
+
+  return digits.length === 10;
+};
+
 const goTo = (request, path, why) => {
   const url = new URL(path, request.url);
 
@@ -215,6 +225,12 @@ export async function onRequestPost({ request, env }) {
 
   if (!sender || !isEmail(sender)) {
     return goTo(request, FAILURE_PATH, "bad-email");
+  }
+
+  const phone = fields.get("phone");
+
+  if (phone && !isUsPhone(phone)) {
+    return goTo(request, FAILURE_PATH, "bad-phone");
   }
 
   const subject = emailSubject(form, fields);

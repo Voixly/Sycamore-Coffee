@@ -1564,6 +1564,11 @@ main:has(.invite-band) + .site-footer,
   margin: 0;
   font-weight: 600;
 }
+.form-status a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
 .form-status[role="alert"] { color: var(--coral-900); }
 
 .about-cta { margin: 1.25rem 0 0; }

@@ -9,3 +9,9 @@
   {{ with site.Params.turnstileSiteKey }}data-sitekey="{{ . }}"{{ end }}
 ></div>
 <p class="form-status" data-form-status aria-live="polite" hidden></p>
+<template data-form-fail>
+  Something went wrong and your message was not sent. Please
+  <a href="mailto:{{ site.Params.email }}">email</a>
+  or
+  <a href="{{ site.Params.phoneHref | safeURL }}">call us</a>.
+</template>

@@ -21,6 +21,7 @@ call [(936) 520-7073](tel:+19365207073) and we will pick it up from there.
     "missing-key": "RESEND_API_KEY is not set on this Cloudflare environment (Production and Preview are separate).",
     "missing-from": "FORM_FROM or FORM_TO is not set on this Cloudflare environment.",
     "bad-email": "Email must include @ and a domain, like name@example.com.",
+    "bad-phone": "Phone must be a 10-digit US number.",
     "turnstile-missing": "Complete the spam check before sending.",
     "turnstile-error": "The spam check could not reach Cloudflare. Try again in a moment.",
     "resend-401": "Resend rejected the API key (401). Check RESEND_API_KEY.",

@@ -1,6 +1,47 @@
 (() => {
   "use strict";
 
+  const formatUsPhone = (raw) => {
+    let digits = String(raw || "").replace(/\D/g, "");
+
+    if (digits.length === 11 && digits.startsWith("1")) {
+      digits = digits.slice(1);
+    }
+
+    digits = digits.slice(0, 10);
+    const area = digits.slice(0, 3);
+    const mid = digits.slice(3, 6);
+    const last = digits.slice(6, 10);
+
+    if (digits.length === 0) {
+      return "";
+    }
+
+    if (digits.length < 4) {
+      return area;
+    }
+
+    if (digits.length < 7) {
+      return `${area}-${mid}`;
+    }
+
+    return `${area}-${mid}-${last}`;
+  };
+
+  const initPhoneFields = () => {
+    for (const input of document.querySelectorAll('input[type="tel"]')) {
+      input.setAttribute("inputmode", "numeric");
+      input.setAttribute("maxlength", "12");
+      input.setAttribute("pattern", "\\d{3}-\\d{3}-\\d{4}");
+      input.setAttribute("title", "10-digit US number, like 936-520-7073");
+      input.value = formatUsPhone(input.value);
+
+      input.addEventListener("input", () => {
+        input.value = formatUsPhone(input.value);
+      });
+    }
+  };
+
   const initNav = () => {
     const toggle = document.querySelector(".nav-toggle");
     const nav = document.getElementById("site-nav");
@@ -530,9 +571,16 @@
 
       const idleLabel = submit.textContent;
 
+      const failTpl = form.querySelector("[data-form-fail]");
+      const failHtml = failTpl ? failTpl.innerHTML.trim() : "";
+
       const setStatus = (kind, message) => {
         status.hidden = false;
-        status.textContent = message;
+        if (kind === "error" && failHtml) {
+          status.innerHTML = failHtml;
+        } else {
+          status.textContent = message;
+        }
         if (kind === "error") {
           status.setAttribute("role", "alert");
           status.removeAttribute("aria-live");
@@ -590,6 +638,7 @@
   };
 
   initNav();
+  initPhoneFields();
   initHoursDialog();
   initCateringPicker();
   initPolaroids();
