@@ -24,6 +24,8 @@ params:
   phoneHref: tel:9365207073
   # Cloudflare Pages Function in functions/api/form.js; it calls Resend.
   formEndpoint: /api/form
+  # Public Turnstile widget sitekey (dashboard-created widget).
+  turnstileSiteKey: "0x4AAAAAAAeeJeiu3ejj03GS"
   address:
     street: 33130 Magnolia Circle
     suite: Suite B

@@ -495,9 +495,10 @@
     }
 
     for (const host of hosts) {
+      const action = host.getAttribute("data-action") || "turnstile-spin-v1";
       window.turnstile.render(host, {
         sitekey: siteKey,
-        action: "turnstile-spin-v1",
+        action,
         theme: "light",
         size: "flexible",
       });
