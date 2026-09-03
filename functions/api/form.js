@@ -105,16 +105,21 @@ const emailSubject = (form, fields) => {
 };
 
 const verifyTurnstile = async (request, env, token) => {
-  if (!env.FORM_TS_SECRET) {
+  const secret = String(env.FORM_TS_SECRET || "").trim();
+  const hasToken = Boolean(String(token || "").trim());
+
+  if (!secret) {
+    console.log("form: turnstile", { bound: false, hasToken, called: false });
     return { ok: true };
   }
 
-  if (!String(token || "").trim()) {
+  if (!hasToken) {
+    console.log("form: turnstile", { bound: true, hasToken: false, called: false });
     return { ok: false, why: "turnstile-missing" };
   }
 
   const body = new URLSearchParams({
-    secret: env.FORM_TS_SECRET,
+    secret,
     response: String(token).trim(),
   });
   const ip = request.headers.get("CF-Connecting-IP");
@@ -142,6 +147,8 @@ const verifyTurnstile = async (request, env, token) => {
 
     return { ok: false, why: "turnstile" };
   }
+
+  console.log("form: turnstile", { bound: true, hasToken: true, called: true, ok: true });
 
   return { ok: true };
 };
