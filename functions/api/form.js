@@ -106,15 +106,12 @@ const emailSubject = (form, fields) => {
 
 const verifyTurnstile = async (request, env, token) => {
   const secret = String(env.FORM_TS_SECRET || "").trim();
-  const hasToken = Boolean(String(token || "").trim());
 
   if (!secret) {
-    console.log("form: turnstile", { bound: false, hasToken, called: false });
     return { ok: true };
   }
 
-  if (!hasToken) {
-    console.log("form: turnstile", { bound: true, hasToken: false, called: false });
+  if (!String(token || "").trim()) {
     return { ok: false, why: "turnstile-missing" };
   }
 
@@ -147,8 +144,6 @@ const verifyTurnstile = async (request, env, token) => {
 
     return { ok: false, why: "turnstile" };
   }
-
-  console.log("form: turnstile", { bound: true, hasToken: true, called: true, ok: true });
 
   return { ok: true };
 };

@@ -24,12 +24,10 @@
     </a>
 
     <nav class="nav" id="site-nav" aria-label="Main">
-      <a class="btn btn-primary nav-cta" href="{{ $addr.maps }}" target="_blank" rel="noopener" data-hours-open>Grab a Cup</a>
       {{ range site.Menus.main }}
         <a href="{{ .URL }}"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener"{{ end }}{{ if eq $.RelPermalink .URL }} aria-current="page"{{ end }}>{{ .Name }}</a>
       {{ end }}
       <div class="nav-extras">
-        <a href="{{ "/coffee-camper/" | relURL }}">Book the Coffee Camper</a>
         <p>
           <a href="{{ $addr.maps }}" target="_blank" rel="noopener">
             {{ $addr.street }} {{ $addr.suite }}, {{ $addr.city }}, {{ $addr.state }} {{ $addr.zip }}
@@ -39,12 +37,6 @@
           <h2 class="hours-heading">Hours <span class="hours-badge" data-hours-badge hidden></span></h2>
           {{ partial "hours-list.html" . }}
         </div>
-        <p>
-          <a href="{{ site.Params.phoneHref | safeURL }}">{{ site.Params.phone }}</a>
-        </p>
-        <p>
-          <a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a>
-        </p>
         <div class="nav-social">
           <h2>Follow our shop!</h2>
           {{ partial "social-links.html" "cream" }}
