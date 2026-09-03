@@ -548,6 +548,11 @@
         }
 
         event.preventDefault();
+
+        if (!form.reportValidity()) {
+          return;
+        }
+
         submit.disabled = true;
         submit.textContent = "Sending…";
         setStatus("pending", "Sending your message.");

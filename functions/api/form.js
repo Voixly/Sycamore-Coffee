@@ -42,7 +42,7 @@ const toLabel = (key) => {
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
 
-const isEmail = (value) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
+const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(value);
 
 const goTo = (request, path, why) => {
   const url = new URL(path, request.url);
@@ -211,8 +211,13 @@ export async function onRequestPost({ request, env }) {
     return goTo(request, FAILURE_PATH, "empty");
   }
 
-  const subject = emailSubject(form, fields);
   const sender = fields.get("email");
+
+  if (!sender || !isEmail(sender)) {
+    return goTo(request, FAILURE_PATH, "bad-email");
+  }
+
+  const subject = emailSubject(form, fields);
 
   const payload = {
     from: env.FORM_FROM,
@@ -226,9 +231,7 @@ export async function onRequestPost({ request, env }) {
   };
 
   /* Lets staff reply straight to the person who filled the form. */
-  if (sender && isEmail(sender)) {
-    payload.reply_to = sender;
-  }
+  payload.reply_to = sender;
 
   if (!payload.from || payload.to.length === 0) {
     console.error("form: FORM_FROM or FORM_TO is not set");
