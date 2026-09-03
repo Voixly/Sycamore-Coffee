@@ -496,11 +496,12 @@
 
     for (const host of hosts) {
       const action = host.getAttribute("data-action") || "turnstile-spin-v1";
+      const size = host.clientWidth > 0 && host.clientWidth < 300 ? "compact" : "normal";
       window.turnstile.render(host, {
         sitekey: siteKey,
         action,
         theme: "light",
-        size: "flexible",
+        size,
       });
     }
   };

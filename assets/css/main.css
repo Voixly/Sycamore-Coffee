@@ -1545,6 +1545,8 @@ main:has(.invite-band) + .site-footer,
 }
 .cf-turnstile {
   margin: 0.15rem 0;
+  width: 100%;
+  min-height: 65px;
 }
 .contact-cards {
   display: grid;
