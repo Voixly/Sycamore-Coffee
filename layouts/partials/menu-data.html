@@ -1,15 +1,18 @@
 {{/*
-  Loads the newest dated CSV from assets/menus/.
-  Filenames should include YY-MM-DD, e.g. 26-08-18.csv or "Sycamore Menu - 26-08-18.csv".
-  Optional matching 26-08-18.yaml can set featuredTitle.
+  Loads the newest CSV in assets/menus/ whose filename date is today or earlier.
+  The date is the go-live day, YY-MM-DD, e.g. "Sycamore Menu - 26-11-02.csv".
+  A future file stays in the folder and is skipped until a build on or after that day.
+  "Today" follows hugo.yaml timeZone (the cafe's local date, not the build machine's UTC date).
+  The flight heading is the main category on those rows, not a sidecar YAML file.
 */}}
+{{ $today := now.Format "06-01-02" }}
 {{ $bestDate := "" }}
 {{ $bestFile := false }}
 {{ range resources.Match "menus/*.csv" }}
   {{ $found := findRE `\d{2}-\d{2}-\d{2}` .Name }}
   {{ if $found }}
     {{ $d := index $found 0 }}
-    {{ if or (eq $bestDate "") (gt $d $bestDate) }}
+    {{ if and (le $d $today) (or (eq $bestDate "") (gt $d $bestDate)) }}
       {{ $bestDate = $d }}
       {{ $bestFile = . }}
     {{ end }}
@@ -137,12 +140,7 @@
 {{ $year := add 2000 $yy }}
 {{ $updated := time.AsTime (printf "%d-%s-%s" $year (substr $bestDate 3 2) (substr $bestDate 6 2)) }}
 
-{{ $featuredTitle := "Seasonal Flights" }}
-{{ with site.Params.menu.featuredTitle }}{{ $featuredTitle = . }}{{ end }}
-{{ with resources.Get (printf "menus/%s.yaml" $bestDate) }}
-  {{ $meta := .Content | transform.Unmarshal }}
-  {{ with $meta.featuredTitle }}{{ $featuredTitle = . }}{{ end }}
-{{ end }}
+{{ $featuredTitle := "Flights" }}
 {{ with index $flights 0 }}
   {{ with .main }}{{ $featuredTitle = . }}{{ end }}
 {{ end }}

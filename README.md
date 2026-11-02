@@ -19,15 +19,20 @@ hugo --gc --minify    # production build into public/
 ## Updating the menu
 
 The menu page is generated from a CSV export, not hand-written HTML. To publish
-a new menu, drop a new CSV into `assets/menus/` and rebuild — nothing else.
-
-Filenames must contain a `YY-MM-DD` date. The newest date wins, so old menus can
-stay in the folder as history:
+a new menu, drop a CSV into `assets/menus/`. The filename must contain the
+go-live date as `YY-MM-DD`:
 
 ```
-assets/menus/Sycamore Menu - 26-08-18.csv
-assets/menus/26-08-18.yaml              # optional, same date
+assets/menus/Sycamore Menu - 26-11-02.csv
 ```
+
+That file can be committed before the date. The build uses the newest CSV whose
+date is today or earlier in America/Chicago (`timeZone` in `hugo.yaml`). A
+future file stays in the folder and is skipped. Older CSVs can stay as history.
+
+The site is static, so the new menu appears on the next build on or after that
+day, not at midnight by itself. Rebuild that morning (push, or retry the
+Cloudflare Pages deployment) for it to go live.
 
 The CSV columns are positional:
 
@@ -47,11 +52,9 @@ partial — a new sub category will be parsed but will not render until it is
 added to one of the ordered lists there (`coffeeLeft`, `coffeeRight`, `flights`,
 `other`, `food`, `kids`).
 
-The optional YAML file next to the CSV overrides the flight section title:
-
-```yaml
-featuredTitle: Back to School Flights
-```
+The flight section heading is the main category on those rows (`Fall Flights`,
+`Christmas Flights`). Use the same main category on every flight row. There is
+no YAML file to edit.
 
 The "Updated <date>" line on the page comes from the CSV filename.
 

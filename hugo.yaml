@@ -63,8 +63,8 @@ params:
     - https://use.typekit.net/af/e2d3c9/0000000000000000775091cb/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n6&v=3
     - https://use.typekit.net/af/ef1c48/0000000000000000776015b9/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n4&v=3
     - https://use.typekit.net/af/5a184a/0000000000000000776015ba/31/l?primer=8fa4b058e82492e04d7cdf52b0e62c529469bc2a019e2b65c17d5e267ca91b8d&fvd=n6&v=3
-  menu:
-    featuredTitle: Seasonal Flights
+# Menu go-live dates in filenames are compared against this zone, not UTC.
+timeZone: America/Chicago
 menu:
   main:
     - name: About Us
