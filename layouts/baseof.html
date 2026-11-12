@@ -9,7 +9,7 @@
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
-    {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
+    {{ $js := slice (resources.Get "js/shop-hours.js") (resources.Get "js/site.js") | resources.Concat "js/site.js" | minify | fingerprint }}
     <script src="{{ $js.RelPermalink }}" defer></script>
   </body>
 </html>

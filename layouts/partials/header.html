@@ -9,11 +9,20 @@
     ) }}
   {{ end }}
 {{ end }}
+{{ $closures := slice }}
+{{ range site.Params.closures }}
+  {{ $row := dict "name" .name "month" .month }}
+  {{ with .day }}{{ $row = merge $row (dict "day" .) }}{{ end }}
+  {{ with .weekday }}{{ $row = merge $row (dict "weekday" .) }}{{ end }}
+  {{ with .nth }}{{ $row = merge $row (dict "nth" .) }}{{ end }}
+  {{ $closures = $closures | append $row }}
+{{ end }}
 {{ $hoursJSON := dict
   "tz" "America/Chicago"
   "maps" site.Params.address.maps
   "soonMinutes" 30
   "days" $hoursDays
+  "closures" $closures
 }}
 {{ $addr := site.Params.address }}
 

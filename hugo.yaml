@@ -37,6 +37,8 @@ params:
     maps: https://maps.app.goo.gl/5Vcx6iN5PJUxoEmY6
   # opens/closes are 24h and feed the schema.org opening hours; omit them to
   # mark a day closed. label/value are what visitors actually read.
+  # params.closures override these hours for the whole day. They are not
+  # printed in the weekly list; the open/closed clock uses them instead.
   hours:
     - label: Monday–Friday
       value: 7:30 AM – 4 PM
@@ -51,6 +53,20 @@ params:
     - label: Sunday
       value: Closed
       days: [Sunday]
+  # Whole-day closures. These override weekday hours on the open/closed clock
+  # and in schema.org. Thanksgiving is the fourth Thursday in November.
+  # month is 1–12. A fixed date uses day; a floating date uses weekday + nth.
+  closures:
+    - name: Thanksgiving
+      month: 11
+      weekday: Thursday
+      nth: 4
+    - name: Christmas Eve
+      month: 12
+      day: 24
+    - name: Christmas
+      month: 12
+      day: 25
   social:
     instagram: https://www.instagram.com/sycamorecoffeeco/
     facebook: https://www.facebook.com/p/Sycamore-Coffee-Co-61561258343006/

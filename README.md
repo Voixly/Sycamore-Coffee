@@ -114,6 +114,13 @@ Hours entries carry both display strings and machine times:
   closes: "16:00"               # omit opens/closes to mark a day closed
 ```
 
+Whole-day holiday closures live under `params.closures`. They are not added
+to the weekly hours list. On those dates the open/closed clock treats the
+shop as closed, even when that weekday would normally be open. Thanksgiving
+is the fourth Thursday in November; Christmas Eve and Christmas are fixed
+dates. The schema.org block publishes the next three years of those dates
+as closed.
+
 ## Third-party services
 
 - **Adobe Fonts (Typekit)** serves both `beverly-drive-right` and `barlow`. Do

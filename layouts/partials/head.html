@@ -63,6 +63,38 @@
     ) }}
   {{ end }}
 {{ end }}
+{{ $specialHours := slice }}
+{{ $closureYears := slice now.Year (add now.Year 1) (add now.Year 2) }}
+{{ range $year := $closureYears }}
+  {{ range $rule := site.Params.closures }}
+    {{ $iso := "" }}
+    {{ if $rule.day }}
+      {{ $iso = printf "%04d-%02d-%02d" $year (int $rule.month) (int $rule.day) }}
+    {{ else if and $rule.weekday $rule.nth }}
+      {{ $start := time.AsTime (printf "%04d-%02d-01T12:00:00Z" $year (int $rule.month)) }}
+      {{ $first := -1 }}
+      {{ range $offset := seq 0 6 }}
+        {{ $d := $start.AddDate 0 0 $offset }}
+        {{ if and (eq ($d.Format "Monday") $rule.weekday) (lt $first 0) }}
+          {{ $first = $offset }}
+        {{ end }}
+      {{ end }}
+      {{ if ge $first 0 }}
+        {{ $nthOffset := add $first (mul (sub (int $rule.nth) 1) 7) }}
+        {{ $iso = ($start.AddDate 0 0 $nthOffset).Format "2006-01-02" }}
+      {{ end }}
+    {{ end }}
+    {{ if $iso }}
+      {{ $specialHours = $specialHours | append (dict
+        "@type" "OpeningHoursSpecification"
+        "validFrom" $iso
+        "validThrough" $iso
+        "opens" "00:00"
+        "closes" "00:00"
+      ) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
 {{ $schema := dict
   "@context" "https://schema.org"
   "@type" "CafeOrCoffeeShop"
@@ -83,6 +115,7 @@
   )
   "geo" (dict "@type" "GeoCoordinates" "latitude" $addr.lat "longitude" $addr.lng)
   "openingHoursSpecification" $openingHours
+  "specialOpeningHoursSpecification" $specialHours
   "sameAs" (slice site.Params.social.instagram site.Params.social.facebook)
 }}
 {{ $schema | jsonify | safeJS }}
